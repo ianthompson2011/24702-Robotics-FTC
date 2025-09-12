@@ -1,3 +1,59 @@
+<h1>GUIDE FOR CONTRIBUTIONS AND ADDITIONS</h1>
+
+<p>Welcome! This guide will help you safely contribute to our robotics code repository. We’ll walk through creating branches, committing changes, testing, opening pull requests, getting code reviewed, and merging. Follow these steps to keep our main branch (called <code>master</code>) safe and working for everyone.</p>
+<p>Below the contributing guide are instuctions on the forked repo. Skip down to see that. </p>
+<h3>TLDR</h3>
+<strong>Make sure that the code you are pushing compiles correctly and works towards your desired purpose. NEVER PUSH CODE TO MASTER IF IT DOES NOT COMPILE CORRECTLY. Due to merging conflicts, we will not be making seperate branches, so we trust that the code you commit is valid. <code>git revert</code> can be used if code does not work correctly or if we need changes.</strong>
+
+<h2>1. Setup</h2>
+<ul>
+  <li>Install <strong>Git</strong>: <a href="https://git-scm.com/">https://git-scm.com/</a></li>
+  <li>Install <strong>Android Studio</strong> for Java & Android development</li>
+  <li>Clone the repository in your terminal:
+    <pre><code>git clone &lt;repo-url&gt;
+cd &lt;repo-folder&gt;</code></pre>
+    Replace <code>&lt;repo-url&gt;</code> with the GitHub URL of our repository.
+  </li>
+</ul>
+
+<h2>2. Making Changes</h2>
+<ul>
+  <li>Edit files in Android Studio</li>
+  <li>Test your code locally to make sure everything works</li>
+  <li>Stage and commit your changes:
+    <pre><code>git add .
+git commit -m "Describe clearly what you changed"</code></pre>
+  </li>
+</ul>
+
+<h2>3. Code Review Rules</h2>
+<ul>
+  <li>No one merges their own code unless a specific commit message is specified.</li>
+  <li>At least one teammate must review and approve your code.</li>
+</ul>
+<p>Reviewers check:</p>
+<ul>
+  <li>Code compiles without errors</li>
+  <li>Code follows team style</li>
+  <li>Existing features are not broken</li>
+</ul>
+
+<h2>4. Discord Notifications</h2>
+<p>When your code is ready for review, post in <code>#24702-programming</code> on Discord:</p>
+<pre><code>🚨 Code Review Needed 🚨
+Branch: feature/&lt;short-description&gt;
+PR Link: &lt;github-pr-url&gt;</code></pre>
+
+<h2>5. Best Practices</h2>
+<ul>
+  <li>Make small, frequent commits</li>
+  <li>Write clear and descriptive commit messages</li>
+  <li>Test your code thoroughly before requesting review</li>
+  <li>Delete feature branches after merging to keep the repository clean</li>
+</ul>
+
+<hr>
+
 ## NOTICE
 
 This repository contains the public FTC SDK for the DECODE (2025-2026) competition season.
