@@ -1,9 +1,12 @@
 <h1>GUIDE FOR CONTRIBUTIONS AND ADDITIONS</h1>
 
-<p>Welcome! This guide will help you safely contribute to our robotics code repository. We’ll walk through creating branches, committing changes, testing, opening pull requests, getting code reviewed, and merging. Follow these steps to keep our main branch (called <code>master</code>) safe and working for everyone.</p>
-<p>Below the contributing guide are instuctions on the forked repo. Skip down to see that. </p>
+<p>Welcome! This guide will help you safely contribute to our robotics code repository. We’ll walk through creating branches, committing changes, testing, opening pull requests, getting code reviewed, and merging. Follow these steps to keep our main branch (called <code>main</code>) safe and working for everyone.</p>
+<p>Below the contributing guide are instructions on the forked repo. Skip down to see that. </p>
+
 <h3>TLDR</h3>
-<strong>Make sure that the code you are pushing compiles correctly and works towards your desired purpose. NEVER PUSH CODE TO MASTER IF IT DOES NOT COMPILE CORRECTLY. Due to merging conflicts, we will not be making seperate branches, so we trust that the code you commit is valid. <code>git revert</code> can be used if code does not work correctly or if we need changes.</strong>
+<strong>All changes must go through a branch and pull request.
+NEVER push directly to <code>main</code>.
+PRs must be reviewed before merging. If conflicts appear, fix them on your branch before merging. <code>main</code> must always compile and remain stable.</strong>
 
 <h2>1. Setup</h2>
 <ul>
@@ -16,43 +19,99 @@ cd &lt;repo-folder&gt;</code></pre>
   </li>
 </ul>
 
-<h2>2. Making Changes</h2>
+<h2>2. Branch Workflow</h2>
 <ul>
-  <li>Edit files in Android Studio</li>
-  <li>Test your code locally to make sure everything works</li>
+  <li>Create a new branch for your changes:
+    <pre><code>git checkout -b feature/&lt;short-description&gt;</code></pre>
+  </li>
+  <li>Edit files in Android Studio and test locally</li>
   <li>Stage and commit your changes:
     <pre><code>git add .
-git commit -m "Describe clearly what you changed"</code></pre>
+git commit -m "Clear, descriptive message"</code></pre>
+  </li>
+  <li>Push your branch to GitHub:
+    <pre><code>git push origin feature/&lt;short-description&gt;</code></pre>
   </li>
 </ul>
 
-<h2>3. Code Review Rules</h2>
+<h2>3. Pull Requests</h2>
 <ul>
-  <li>No one merges their own code unless a specific commit message is specified.</li>
-  <li>At least one teammate must review and approve your code.</li>
-</ul>
-<p>Reviewers check:</p>
-<ul>
-  <li>Code compiles without errors</li>
-  <li>Code follows team style</li>
-  <li>Existing features are not broken</li>
+  <li>Go to the repository on GitHub</li>
+  <li>Click "Compare & Pull Request"</li>
+  <li>Write a clear summary of what your code does</li>
+  <li>Request at least one teammate to review your PR</li>
 </ul>
 
-<h2>4. Discord Notifications</h2>
+<h2>4. Handling Merge Conflicts (without touching main)</h2>
+<p>If GitHub shows a merge conflict in your PR, you must resolve it on your feature branch before merging:</p>
+<ol>
+  <li>Make sure your local <code>main</code> is up-to-date:
+    <pre><code>git checkout main
+git pull origin main</code></pre>
+  </li>
+  <li>Switch back to your branch:
+    <pre><code>git checkout feature/&lt;short-description&gt;</code></pre>
+  </li>
+  <li>Merge the latest main into your branch:
+    <pre><code>git merge main</code></pre>
+  </li>
+  <li>Fix conflicts in the files (Git will mark them with <code>&lt;&lt;&lt;&lt;&lt;</code> and <code>&gt;&gt;&gt;&gt;&gt;</code>)</li>
+  <li>Stage and commit after resolving:
+    <pre><code>git add .
+git commit -m "Resolved merge conflicts with main"</code></pre>
+  </li>
+  <li>Push your branch again:
+    <pre><code>git push origin feature/&lt;short-description&gt;</code></pre>
+  </li>
+  <li>Now your PR will show no conflicts, and it can be safely merged into main</li>
+</ol>
+
+<h2>5. Code Review Rules</h2>
+<ul>
+  <li>No one merges their own code</li>
+  <li>At least one approval is required</li>
+  <li>Reviewers check:
+    <ul>
+      <li>Code compiles with no errors</li>
+      <li>Code follows team style</li>
+      <li>No existing features are broken</li>
+    </ul>
+  </li>
+</ul>
+
+<h2>6. Discord Notifications</h2>
 <p>When your code is ready for review, post in <code>#24702-programming</code> on Discord:</p>
 <pre><code>🚨 Code Review Needed 🚨
 Branch: feature/&lt;short-description&gt;
 PR Link: &lt;github-pr-url&gt;</code></pre>
 
-<h2>5. Best Practices</h2>
+<h2>7. Best Practices</h2>
 <ul>
   <li>Make small, frequent commits</li>
   <li>Write clear and descriptive commit messages</li>
   <li>Test your code thoroughly before requesting review</li>
-  <li>Delete feature branches after merging to keep the repository clean</li>
+  <li>Delete feature branches after merging</li>
 </ul>
 
 <hr>
+
+<h2>How This Is Enforced</h2>
+<p>To make sure no one bypasses these rules, the repository has GitHub settings enabled:</p>
+<ul>
+  <li><strong>Branch Protection Rules</strong> on <code>main</code>:
+    <ul>
+      <li>Require pull requests before merging</li>
+      <li>Require at least 1 approving review</li>
+      <li>Block direct pushes to <code>main</code></li>
+      <li>Require branches to be up to date before merging</li>
+    </ul>
+  </li>
+  <li>This ensures all merge conflicts are resolved on feature branches, not on main</li>
+</ul>
+
+<p>These settings are found in:
+<code>Repo → Settings → Branches → Branch Protection Rules</code></p>
+
 
 ## NOTICE
 
