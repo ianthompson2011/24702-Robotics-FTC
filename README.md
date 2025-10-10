@@ -1,5 +1,4 @@
 <h1>GUIDE FOR CONTRIBUTIONS AND ADDITIONS</h1>
-<h4>Guide for proper contributions</h4>
 
 <p>Welcome! This guide will help you safely contribute to our robotics code repository. We’ll walk through creating branches, committing changes, testing, opening pull requests, getting code reviewed, and merging. Follow these steps to keep our main branch (called <code>main</code>) safe and working for everyone.</p>
 <p>Below the contributing guide are instructions on the forked repo. Skip down to see that. </p>
