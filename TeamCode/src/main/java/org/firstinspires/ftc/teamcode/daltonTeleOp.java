@@ -2,11 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 @TeleOp(name = "Appears on Driver Station")
 
-public class dalytonTeleop extends LinearOpMode {
+public class daltonTeleOp extends LinearOpMode {
     Hardware robot = Hardware.getInstance();
     public void runOpMode(){
         //once you press init
