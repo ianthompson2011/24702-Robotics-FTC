@@ -12,6 +12,8 @@ public class Hardware {
     public DcMotor lf;
     public DcMotor rb;
     public DcMotor lb;
+    public DcMotor ls;
+    public DcMotor rs;
     public Servo demoServo;
     public static double maxSpeed = 0.9;
     private static Hardware myInstance = null;
@@ -47,6 +49,19 @@ public void init(HardwareMap hwMap){
     lb.setDirection(DcMotorSimple.Direction.REVERSE);
     lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     lb.setPower(0);
+
+    ls = hwMap.get(DcMotor.class, "em0");
+    ls.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    ls.setDirection(DcMotorSimple.Direction.REVERSE);
+    ls.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    ls.setPower(0);
+
+    rs = hwMap.get(DcMotor.class, "em1");
+    rs.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rs.setDirection(DcMotorSimple.Direction.REVERSE);
+    rs.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    rs.setPower(0);
+
     //initialize Servo
     demoServo = hwMap.get(Servo.class, "cs0");
 }
