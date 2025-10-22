@@ -18,7 +18,7 @@ public class daltonTeleOp extends LinearOpMode {
         waitForStart();
         boolean pressingb = false;
         boolean pressingx = true;
-        boolean pressingy = false;
+        // boolean pressingy = false;
 
         boolean difference = false;
         while (opModeIsActive()){
@@ -68,18 +68,19 @@ public class daltonTeleOp extends LinearOpMode {
             } else if (!gamepad1.x){
                 pressingx = false;
             }
-            if(gamepad1.y && !pressingy && difference){
-                robot.rs.setPower(1);
-                robot.ls.setPower(1);
-                pressingy = true;
-                difference = false;
-            } else if(gamepad1.y && !pressingy && !difference) {
-                robot.rb.setPower(0);
-                pressingx = true;
-                difference = true;
-            } else if (!gamepad1.y){
-                pressingx = false;
-            }
+            // Code for shooters
+//            if(gamepad1.y && !pressingy && difference){
+//                robot.rs.setPower(1);
+//                robot.ls.setPower(1);
+//                pressingy = true;
+//                difference = false;
+//            } else if(gamepad1.y && !pressingy && !difference) {
+//                robot.rb.setPower(0);
+//                pressingx = true;
+//                difference = true;
+//            } else if (!gamepad1.y){
+//                pressingx = false;
+//            }
             if (gamepad1.dpad_left) {
                 robot.demoServo.setPosition(0);
             }
