@@ -30,17 +30,19 @@ public void init(HardwareMap hwMap){
 
     lf = hwMap.get(DcMotor.class, "cm0");
     lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    lf.setDirection(DcMotorSimple.Direction.REVERSE);
+
     lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     lf.setPower(0);
 
     rf = hwMap.get(DcMotor.class, "cm1");
     rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rf.setDirection(DcMotorSimple.Direction.REVERSE);
     rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     rf.setPower(0);
 
     rb = hwMap.get(DcMotor.class, "cm2");
     rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rb.setDirection(DcMotorSimple.Direction.REVERSE);
     rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     rb.setPower(0);
 

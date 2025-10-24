@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Appears on Driver Station")
+@TeleOp(name = "demoTeleop")
 
 public class daltonTeleOp extends LinearOpMode {
     Hardware robot = Hardware.getInstance();
@@ -22,26 +22,26 @@ public class daltonTeleOp extends LinearOpMode {
 
         boolean difference = false;
         while (opModeIsActive()){
-            double movement = gamepad1.left_stick_x;
-            double strafing = -gamepad1.right_stick_y;
-            double turning = -gamepad1.left_stick_y;
+            double movement = gamepad1.left_stick_y;
+            double strafing = -gamepad1.left_stick_x;
+            double turning = -gamepad1.right_stick_x;
 
             double max = Math.max(Math.abs(movement - strafing - turning),
                     Math.max(Math.abs(movement + strafing - turning),
-                    Math.max(Math.abs(movement + strafing + turning),
-                            Math.abs(movement - strafing + turning))));
+                    Math.max(Math.abs(movement - strafing + turning),
+                            Math.abs(movement + strafing + turning))));
 
             if (max < robot.maxSpeed){
                 robot.setPower(movement - strafing - turning,
                         movement + strafing - turning,
-                        movement + strafing + turning,
-                        movement - strafing + turning);
+                        movement - strafing + turning,
+                        movement + strafing + turning);
             } else {
                 double scaleFactor = max/robot.maxSpeed;
                 robot.setPower(movement - strafing - turning * scaleFactor,
                         movement + strafing - turning * scaleFactor,
-                        movement + strafing + turning * scaleFactor,
-                        movement - strafing + turning * scaleFactor); }
+                        movement - strafing + turning * scaleFactor,
+                        movement + strafing + turning * scaleFactor); }
             if(gamepad1.a){
                 robot.lb.setPower(1);
             }
@@ -49,20 +49,20 @@ public class daltonTeleOp extends LinearOpMode {
                 robot.lb.setPower(1);
             }
             if((gamepad1.left_stick_y > 0.3)){
-                robot.lb.setPower(1);
+                robot.lb.setPower(0.5);
             }
             if(gamepad1.b && !pressingb) {
-                robot.lb.setPower(1);
+                robot.lb.setPower(0.5);
                 pressingb = true;
             } else if (!gamepad1.b){
                 pressingb = false;
             }
             if(gamepad1.x && !pressingx && difference) {
-                robot.lb.setPower(1);
+                robot.lb.setPower(0.5);
                 pressingx = true;
                 difference = false;
             } else if(gamepad1.x && !pressingx && !difference) {
-                robot.rb.setPower(-1);
+                robot.rb.setPower(0.5);
                 pressingx = true;
                 difference = true;
             } else if (!gamepad1.x){
