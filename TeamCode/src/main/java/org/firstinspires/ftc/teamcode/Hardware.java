@@ -15,7 +15,7 @@ public class Hardware {
     public DcMotor ls;
     public DcMotor rs;
     public Servo demoServo;
-    public static double maxSpeed = 0.9;
+    public static double maxSpeed = 0.7;
     private static Hardware myInstance = null;
     public static Hardware getInstance(){
      if(myInstance == null) {
@@ -53,7 +53,6 @@ public void init(HardwareMap hwMap){
     // motors for shooters
     ls = hwMap.get(DcMotor.class, "em0");
     ls.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    ls.setDirection(DcMotorSimple.Direction.REVERSE);
     ls.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     ls.setPower(0);
 

@@ -115,10 +115,10 @@ public class daltonTeleOp extends LinearOpMode {
         double frontRightPower = (y - x - strafe) / denominator;
         double backRightPower = (y + x - strafe) / denominator;
 
-        robot.lf.setPower(frontLeftPower - 0.7);
-        robot.lb.setPower(backLeftPower - 0.7);
-        robot.rf.setPower(frontRightPower - 0.7);
-        robot.rb.setPower(backRightPower - 0.7);
+        robot.lf.setPower(frontLeftPower);
+        robot.lb.setPower(backLeftPower);
+        robot.rf.setPower(frontRightPower);
+        robot.rb.setPower(backRightPower);
     }
     public void shoot(){
         // will initialize rs and ls with clicking A
@@ -126,8 +126,8 @@ public class daltonTeleOp extends LinearOpMode {
             robot.rs.setPower(0);
             robot.ls.setPower(0);
         } else{
-            robot.rs.setPower(1);
-            robot.ls.setPower(1);
+            robot.rs.setPower(0.70);
+            robot.ls.setPower(0.70);
         }
     }
 }
