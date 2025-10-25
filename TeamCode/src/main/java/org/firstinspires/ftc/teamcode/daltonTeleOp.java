@@ -33,6 +33,7 @@ public class daltonTeleOp extends LinearOpMode {
             telemetry.update();
 
             drive( leftStickY, leftStickX, rightStickX );
+            shoot();
 
             /*double movement = gamepad1.left_stick_y;
             double strafing = -gamepad1.left_stick_x;
@@ -114,9 +115,19 @@ public class daltonTeleOp extends LinearOpMode {
         double frontRightPower = (y - x - strafe) / denominator;
         double backRightPower = (y + x - strafe) / denominator;
 
-        robot.lf.setPower(frontLeftPower);
-        robot.lb.setPower(backLeftPower);
-        robot.rf.setPower(frontRightPower);
-        robot.rb.setPower(backRightPower);
+        robot.lf.setPower(frontLeftPower - 0.7);
+        robot.lb.setPower(backLeftPower - 0.7);
+        robot.rf.setPower(frontRightPower - 0.7);
+        robot.rb.setPower(backRightPower - 0.7);
+    }
+    public void shoot(){
+        // will initialize rs and ls with clicking A
+        if(!gamepad1.a){
+            robot.rs.setPower(0);
+            robot.ls.setPower(0);
+        } else{
+            robot.rs.setPower(1);
+            robot.ls.setPower(1);
+        }
     }
 }
