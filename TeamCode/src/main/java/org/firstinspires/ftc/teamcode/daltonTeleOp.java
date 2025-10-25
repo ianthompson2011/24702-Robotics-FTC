@@ -22,10 +22,21 @@ public class daltonTeleOp extends LinearOpMode {
 
         boolean difference = false;
         while (opModeIsActive()){
-            double movement = gamepad1.left_stick_y;
+
+            double leftStickY = -gamepad1.left_stick_y; // Remember, this is reversed!
+            double leftStickX = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+            double rightStickX = gamepad1.right_stick_x;
+
+            telemetry.addData("leftStick X", leftStickX );
+            telemetry.addData("leftStick Y", leftStickY );
+            telemetry.addData("rightStick X", rightStickX );
+            telemetry.update();
+
+            drive( leftStickY, leftStickX, rightStickX );
+
+            /*double movement = gamepad1.left_stick_y;
             double strafing = -gamepad1.left_stick_x;
             double turning = -gamepad1.right_stick_x;
-
             double max = Math.max(Math.abs(movement - strafing - turning),
                     Math.max(Math.abs(movement + strafing - turning),
                     Math.max(Math.abs(movement - strafing + turning),
@@ -46,23 +57,23 @@ public class daltonTeleOp extends LinearOpMode {
                 robot.lb.setPower(1);
             }
             if((gamepad1.left_trigger > 0.3)){
-                robot.lb.setPower(1);
+                robot.lb.setPower(0.1);
             }
             if((gamepad1.left_stick_y > 0.3)){
-                robot.lb.setPower(0.5);
+                robot.lb.setPower(0.1);
             }
             if(gamepad1.b && !pressingb) {
-                robot.lb.setPower(0.5);
+                robot.lb.setPower(0.1);
                 pressingb = true;
             } else if (!gamepad1.b){
                 pressingb = false;
             }
             if(gamepad1.x && !pressingx && difference) {
-                robot.lb.setPower(0.5);
+                robot.lb.setPower(0.1);
                 pressingx = true;
                 difference = false;
             } else if(gamepad1.x && !pressingx && !difference) {
-                robot.rb.setPower(0.5);
+                robot.rb.setPower(0.1);
                 pressingx = true;
                 difference = true;
             } else if (!gamepad1.x){
@@ -89,8 +100,23 @@ public class daltonTeleOp extends LinearOpMode {
             }
             else if (gamepad1.dpad_down){
                 robot.demoServo.setPosition(0.5);
-            }
+            }*/
         }
     }
+    public void drive( double x, double y, double strafe ) {
 
+        // Denominator is the largest motor power (absolute value) or 1
+        // This ensures all the powers maintain the same ratio, but only when
+        // at least one is out of the range [-1, 1]
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(strafe), 1);
+        double frontLeftPower = (y + x + strafe) / denominator;
+        double backLeftPower = (y - x + strafe) / denominator;
+        double frontRightPower = (y - x - strafe) / denominator;
+        double backRightPower = (y + x - strafe) / denominator;
+
+        robot.lf.setPower(frontLeftPower);
+        robot.lb.setPower(backLeftPower);
+        robot.rf.setPower(frontRightPower);
+        robot.rb.setPower(backRightPower);
+    }
 }
