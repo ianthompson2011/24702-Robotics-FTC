@@ -15,7 +15,7 @@ public class Hardware {
     public DcMotor ls;
     public DcMotor rs;
     public Servo demoServo;
-    public static double maxSpeed = 0.9;
+    public static double maxSpeed = 0.6;
     private static Hardware myInstance = null;
     public static Hardware getInstance(){
      if(myInstance == null) {
@@ -64,7 +64,7 @@ public void init(HardwareMap hwMap){
 //    rs.setPower(0);
 
     //initialize Servo
-    demoServo = hwMap.get(Servo.class, "cs0");
+    // demoServo = hwMap.get(Servo.class, "cs0");
 }
 public void setPower(double fr, double br, double bl, double fl){
     rf.setPower(Range.clip(fr, -maxSpeed, maxSpeed));
