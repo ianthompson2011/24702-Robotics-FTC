@@ -85,5 +85,4 @@ public class Auto extends LinearOpMode {
         robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    }
-
+}

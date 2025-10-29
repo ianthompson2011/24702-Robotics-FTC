@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name = "demoTeleop")
 
-public class daltonTeleOp extends LinearOpMode {
+public class mainTeleOp extends LinearOpMode {
     Hardware robot = Hardware.getInstance();
     public void runOpMode(){
         //once you press init
@@ -33,6 +33,7 @@ public class daltonTeleOp extends LinearOpMode {
             telemetry.update();
 
             drive( leftStickY, leftStickX, rightStickX );
+            shoot();
 
             /*double movement = gamepad1.left_stick_y;
             double strafing = -gamepad1.left_stick_x;
@@ -118,5 +119,15 @@ public class daltonTeleOp extends LinearOpMode {
         robot.lb.setPower(backLeftPower);
         robot.rf.setPower(frontRightPower);
         robot.rb.setPower(backRightPower);
+    }
+    public void shoot(){
+        // will initialize rs and ls with clicking A
+        if(!gamepad1.a){
+            robot.rs.setPower(0);
+            robot.ls.setPower(0);
+        } else{
+            robot.rs.setPower(0.70);
+            robot.ls.setPower(0.70);
+        }
     }
 }
