@@ -63,7 +63,7 @@ public class Hardware {
         rs.setPower(0);
 
         //initialize Servo
-        demoServo = hwMap.get(Servo.class, "cs0");
+        demoServo = hwMap.get(Servo.class, "es3");
     }
     public void setPower(double fr, double br, double bl, double fl){
         rf.setPower(Range.clip(fr, -maxSpeed, maxSpeed));

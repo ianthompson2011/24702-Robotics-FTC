@@ -33,6 +33,7 @@ public class mainTeleOp extends LinearOpMode {
             telemetry.update();
 
             drive( leftStickY, leftStickX, rightStickX );
+            initServo();
             shoot();
         }
     }
@@ -60,6 +61,13 @@ public class mainTeleOp extends LinearOpMode {
         } else{
             robot.rs.setPower(0.70);
             robot.ls.setPower(0.70);
+        }
+    }
+    public void initServo(){
+        if(!gamepad1.b){
+            robot.demoServo.setPosition(0);
+        } else{
+            robot.demoServo.setPosition(1);
         }
     }
 }
