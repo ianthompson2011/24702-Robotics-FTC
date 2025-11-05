@@ -1,3 +1,368 @@
+<h1>Guide for Notebook</h1>
+
+These three parts make up how your robot is programmed and controlled.
+
+---
+
+### ⚙️ Hardware Class
+
+This is the **foundation** of the robot code.
+It defines and initializes all the **hardware components** like motors, servos, and sensors.
+
+**Purpose:**
+
+* To create one place where all robot parts are defined.
+* Makes code cleaner so you can use the same hardware setup in both TeleOp and Auto.
+
+**Typical structure:**
+
+```java
+public class HardwareRobot {
+    // Motors
+    public DcMotor leftFront = null;
+    public DcMotor rightFront = null;
+    public DcMotor leftBack = null;
+    public DcMotor rightBack = null;
+
+    // Servos
+    public Servo armServo = null;
+
+    // Sensors
+    public IMU imu = null;
+
+    // HardwareMap reference
+    HardwareMap hwMap = null;
+
+    // Initialization method
+    public void init(HardwareMap ahwMap) {
+        hwMap = ahwMap;
+
+        leftFront = hwMap.get(DcMotor.class, "leftFront");
+        rightFront = hwMap.get(DcMotor.class, "rightFront");
+        leftBack = hwMap.get(DcMotor.class, "leftBack");
+        rightBack = hwMap.get(DcMotor.class, "rightBack");
+
+        armServo = hwMap.get(Servo.class, "armServo");
+        imu = hwMap.get(IMU.class, "imu");
+
+        // Set motor directions & behaviors
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
+}
+```
+
+**Notes:**
+
+* The `HardwareMap` links code names to configuration names on the Driver Station phone.
+* Every motor/servo/sensor you list here must have the same name as in the configuration.
+* You only initialize once — then use `robot.leftFront.setPower(1)` etc. anywhere else.
+
+---
+
+### 🎮 TeleOp Class
+
+This controls the robot **during driver-controlled mode** (when you use gamepads).
+
+**Purpose:**
+
+* To let drivers manually control motors and servos.
+* Read inputs from the `gamepad1` and `gamepad2`.
+
+**Typical structure:**
+
+```java
+@TeleOp(name="Main TeleOp", group="TeleOp")
+public class TeleOpMode extends LinearOpMode {
+
+    HardwareRobot robot = new HardwareRobot();
+
+    @Override
+    public void runOpMode() {
+        robot.init(hardwareMap);
+
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+        waitForStart();
+
+        while (opModeIsActive()) {
+            // Drive control
+            double y = -gamepad1.left_stick_y; // Forward/backward
+            double x = gamepad1.left_stick_x;  // Strafe
+            double rx = gamepad1.right_stick_x; // Rotation
+
+            robot.leftFront.setPower(y + x + rx);
+            robot.rightFront.setPower(y - x - rx);
+            robot.leftBack.setPower(y - x + rx);
+            robot.rightBack.setPower(y + x - rx);
+
+            // Arm control
+            if (gamepad1.a) robot.armServo.setPosition(1);
+            if (gamepad1.b) robot.armServo.setPosition(0);
+
+            telemetry.addData("Motors", "Running");
+            telemetry.update();
+        }
+    }
+}
+```
+
+**Notes:**
+
+* Runs continuously inside a `while (opModeIsActive())` loop.
+* `gamepad1` = driver 1, `gamepad2` = driver 2.
+* You can use joysticks for drive, buttons for mechanisms.
+* Telemetry is used to show info on the Driver Station.
+
+---
+
+### 🤖 Autonomous (Auto) Class
+
+This controls the robot **without any human input** — it runs pre-programmed moves for scoring or parking.
+
+**Purpose:**
+
+* To move and act automatically based on sensor data, timers, or predefined paths.
+* Usually runs for 30 seconds at the start of a match.
+
+**Typical structure:**
+
+```java
+@Autonomous(name="Auto Mode", group="Autonomous")
+public class AutoMode extends LinearOpMode {
+
+    HardwareRobot robot = new HardwareRobot();
+
+    @Override
+    public void runOpMode() {
+        robot.init(hardwareMap);
+        telemetry.addData("Status", "Ready for Auto");
+        telemetry.update();
+
+        waitForStart();
+
+        // Move forward
+        robot.leftFront.setPower(0.5);
+        robot.rightFront.setPower(0.5);
+        robot.leftBack.setPower(0.5);
+        robot.rightBack.setPower(0.5);
+        sleep(1000); // Move for 1 second
+
+        // Stop
+        robot.leftFront.setPower(0);
+        robot.rightFront.setPower(0);
+        robot.leftBack.setPower(0);
+        robot.rightBack.setPower(0);
+
+        // Move arm or servo
+        robot.armServo.setPosition(1);
+        sleep(500);
+    }
+}
+```
+
+**Notes:**
+
+* Uses timing, encoders, or sensors for movement accuracy.
+* You can make reusable methods like `driveForward(distance)` or `turn(angle)` to clean it up.
+* Often combined with vision (AprilTags, color detection) for dynamic decisions.
+
+---
+
+### 🔗 How They Work Together
+
+1. **Hardware Class** = defines your robot’s body (motors, servos, sensors).
+2. **TeleOp Class** = lets drivers control that body.
+3. **Auto Class** = lets the robot control itself.
+
+They all **import** and **instantiate** the same `HardwareRobot` object, so all hardware behaves identically in both modes — no duplicate setup.
+
+---
+
+Perfect — since this is for the **Engineering Notebook** (FTC programming section), you want to show both understanding and design intent — not just code.
+
+Here’s everything that’s **important to understand and explain** in addition to the three classes you already mentioned:
+
+---
+
+### 🧩 1. **OpMode Structure**
+
+* FTC uses **OpModes** to define how the robot behaves.
+* Two main types:
+
+  * `@TeleOp`: for driver control
+  * `@Autonomous`: for pre-programmed actions
+* Each OpMode must **extend** either:
+
+  * `LinearOpMode` → code runs in order (most common)
+  * `OpMode` → uses `init()`, `start()`, `loop()`, and `stop()` methods manually
+* You register each one with an annotation like:
+
+  ```java
+  @TeleOp(name="TeleOp Mode", group="Main")
+  ```
+
+---
+
+### ⚙️ 2. **Hardware Mapping & Initialization**
+
+* Every hardware device (motors, servos, sensors) is **mapped to a name** in the FTC Driver Station configuration.
+* You access them with:
+
+  ```java
+  hardwareMap.get(DcMotor.class, "motorName")
+  ```
+* The hardware class acts as a “dictionary” so you can call parts easily in any OpMode.
+
+**Tip for notebook:**
+Include a **hardware diagram** showing each port on the control hub and which device connects to it — then show that it matches the code names.
+
+---
+
+### 🧠 3. **Control Loops**
+
+* In TeleOp, the robot continuously reads the gamepad and updates motor powers inside:
+
+  ```java
+  while (opModeIsActive()) { ... }
+  ```
+* This creates a **control loop**, refreshing many times per second.
+* Important for **responsive driving** and **real-time servo control**.
+
+---
+
+### 🧭 4. **Movement Control**
+
+* FTC uses `DcMotor` methods for basic movement:
+
+  * `setPower()` for direct control
+  * `setTargetPosition()` and `RUN_TO_POSITION` for encoder movement
+* **Encoders** track motor rotation → lets robot move exact distances.
+* **IMU (gyro)** gives heading → used for accurate turning or field-oriented drive.
+
+---
+
+### 📸 5. **Sensors and Feedback**
+
+* Sensors allow **autonomous decision-making**.
+
+  * Examples: Distance sensors, color sensors, touch sensors, IMU, AprilTags.
+* Code often uses:
+
+  ```java
+  if (sensorColor.red() > sensorColor.blue()) { ... }
+  ```
+* Explain how sensors are used to **detect and react** to the field (e.g., detecting team prop).
+
+---
+
+### ⚙️ 6. **Encoders & Odometry (if used)**
+
+* Explain how encoders measure distance:
+
+  * Ticks per revolution → converted into inches/cm.
+* If your team uses odometry wheels, describe how they track X/Y position during Auto.
+
+---
+
+### ⚡ 7. **Autonomous Logic**
+
+* Auto programs follow **step-by-step instructions**:
+
+  1. Move forward → 2. Turn → 3. Drop pixel → 4. Park.
+* Can use timers (`sleep()`), encoders, or sensors for movement timing.
+* **Decision Trees:** sometimes the robot uses camera/sensors to choose between multiple auto paths.
+
+**Notebook tip:**
+Draw a **flowchart** showing your Auto steps (e.g., “Detect team prop → Move to correct zone → Drop pixel → Park”).
+
+---
+
+### 🎮 8. **Gamepad Controls**
+
+* Explain mapping of controls:
+
+  * Example: Left stick = drive, Right stick = rotate, A/B buttons = servo control.
+* Mention **dead zones** (small inputs ignored to prevent drift).
+* Include **driver feedback** using telemetry on the DS screen.
+
+---
+
+### 🧾 9. **Telemetry & Debugging**
+
+* `telemetry.addData("Key", value)` sends data to Driver Station.
+* Useful for:
+
+  * Testing sensor values
+  * Confirming robot state
+  * Showing encoder counts or servo positions
+* Always end loop updates with `telemetry.update()`.
+
+---
+
+### 🧱 10. **Modularity & Reusability**
+
+* The **Hardware class** makes the system modular — reuse same setup across TeleOp and Auto.
+* Good teams split code into smaller helper methods:
+
+  ```java
+  public void driveForward(double power, int distance) { ... }
+  public void turnRight(double power, int angle) { ... }
+  ```
+* Easier to debug and maintain.
+
+---
+
+### 🔐 11. **Safety & Fail-safes**
+
+* Include limits to prevent hardware damage:
+
+  * Servo range limits (0–1)
+  * Motor power caps (-1.0 to 1.0)
+  * Conditional stops if sensors detect obstacles.
+* Add a failsafe stop:
+
+  ```java
+  if (!opModeIsActive()) return;
+  ```
+
+---
+
+### 🧩 12. **File & Package Structure**
+
+Typical organization:
+
+```
+TeamCode/
+ ├── HardwareRobot.java
+ ├── TeleOpMode.java
+ ├── AutoMode.java
+ ├── Vision/
+ │    ├── AprilTagPipeline.java
+ │    └── ColorDetection.java
+ └── Utilities/
+      ├── DriveHelper.java
+      └── PIDController.java
+```
+
+This shows a clean, scalable design — which impresses judges and makes debugging easy.
+
+---
+
+### 🧠 Summary for Notebook
+
+If you’re writing a short explanation page:
+
+> Our FTC codebase is divided into three core components: the Hardware class defines all motors, servos, and sensors and initializes them through the hardware map. The TeleOp class allows manual control of these components using gamepad inputs in a continuous loop, while the Autonomous class runs pre-programmed sequences based on encoder feedback and sensors. Each mode shares the same hardware setup for consistency. We also use telemetry for live debugging, encoders for precision, and sensors (IMU, color, distance) for automation. This modular structure improves reliability, code reuse, and testing efficiency.
+
+---
+
+Would you like me to write that last paragraph as a **polished FTC notebook entry** (like one you’d paste directly into your Engineering Notebook page)?
+
+
+
 <h1>GUIDE FOR CONTRIBUTIONS AND ADDITIONS</h1>
 
 <p>Welcome! This guide will help you safely contribute to our robotics code repository. We’ll walk through creating branches, committing changes, testing, opening pull requests, getting code reviewed, and merging. Follow these steps to keep our main branch (called <code>main</code>) safe and working for everyone.</p>
