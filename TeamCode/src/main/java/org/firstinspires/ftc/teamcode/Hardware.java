@@ -64,8 +64,8 @@ public class Hardware {
         rs.setPower(0);
 
         // initialize Servo
-        demoServo1 = hwMap.get(Servo.class, "es3");
-        demoServo1 = hwMap.get(Servo.class, "es2");
+        demoServo1 = hwMap.get(Servo.class, "cs0");
+        demoServo2 = hwMap.get(Servo.class, "cs1");
         // MAKE SURE THAT THESE SERVOS ON CONFIGURED ON ANDROID DEVICE
     }
     public void setPower(double fr, double br, double bl, double fl){
