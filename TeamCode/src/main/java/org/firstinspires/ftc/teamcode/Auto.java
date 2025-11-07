@@ -26,9 +26,11 @@ public class Auto extends LinearOpMode {
 
         // Feed 2 balls
         for (int i = 0; i < 2; i++) {
-            robot.demoServo.setPosition(1);
+            robot.demoServo1.setPosition(1);
+            robot.demoServo2.setPosition(1);
             sleep(500);
-            robot.demoServo.setPosition(0);
+            robot.demoServo1.setPosition(0);
+            robot.demoServo2.setPosition(0);
             sleep(700);
         }
 
