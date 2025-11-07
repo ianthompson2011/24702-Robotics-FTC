@@ -14,7 +14,8 @@ public class Hardware {
     public DcMotor lb;
     public DcMotor ls;
     public DcMotor rs;
-    public Servo demoServo;
+    public Servo demoServo1;
+    public Servo demoServo2;
     public static double maxSpeed = 0.7;
     private static Hardware myInstance = null;
     public static Hardware getInstance(){
@@ -62,8 +63,10 @@ public class Hardware {
         rs.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rs.setPower(0);
 
-        //initialize Servo
-        demoServo = hwMap.get(Servo.class, "es3");
+        // initialize Servo
+        demoServo1 = hwMap.get(Servo.class, "es3");
+        demoServo1 = hwMap.get(Servo.class, "es2");
+        // MAKE SURE THAT THESE SERVOS ON CONFIGURED ON ANDROID DEVICE
     }
     public void setPower(double fr, double br, double bl, double fl){
         rf.setPower(Range.clip(fr, -maxSpeed, maxSpeed));

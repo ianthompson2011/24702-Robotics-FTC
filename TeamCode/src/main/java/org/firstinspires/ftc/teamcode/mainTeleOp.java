@@ -10,7 +10,7 @@ public class mainTeleOp extends LinearOpMode {
     public void runOpMode(){
         //once you press init
 
-        robot.init(hardwareMap)  ;
+        robot.init(hardwareMap);
         telemetry.addData("Status", "Hello, Drivers!");
         telemetry.update();
 
@@ -59,15 +59,33 @@ public class mainTeleOp extends LinearOpMode {
             robot.rs.setPower(0);
             robot.ls.setPower(0);
         } else{
-            robot.rs.setPower(0.70);
-            robot.ls.setPower(0.70);
+            robot.rs.setPower(1);
+            robot.ls.setPower(1);
         }
     }
     public void initServo(){
         if(!gamepad1.b){
-            robot.demoServo.setPosition(0);
+            robot.demoServo1.setPosition(0);
+            robot.demoServo2.setPosition(0);
         } else{
-            robot.demoServo.setPosition(1);
+            robot.demoServo1.setPosition(1);
+            robot.demoServo2.setPosition(1);
+        }
+    }
+    // We may want to put the shoot() and initServo method() in one method:
+
+    public void prepareLaunch(){
+        if(!gamepad1.y){
+            robot.rs.setPower(0);
+            robot.ls.setPower(0);
+            robot.demoServo1.setPosition(0);
+            robot.demoServo2.setPosition(0);
+        } else{
+            robot.rs.setPower(1);
+            robot.ls.setPower(1);
+            sleep(2000);
+            robot.demoServo1.setPosition(1);
+            robot.demoServo2.setPosition(1);
         }
     }
 }
