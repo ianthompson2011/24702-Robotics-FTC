@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "Auto", group = "Robot")
-public class Auto extends LinearOpMode {
+@Autonomous(name = "FarGoalAutoLeft", group = "Robot")
+public class FarGoalAutoLeft extends LinearOpMode {
     Hardware robot = Hardware.getInstance();
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -43,7 +43,7 @@ public class Auto extends LinearOpMode {
         // encoderDrive(0.5, -24, -24, 5.0); // Move backward 24 inches
 
         // Fire shooter once for example
-        moveBack();
+        move();
         shootSequence();
 
         telemetry.addData("Path", "Complete");
@@ -134,10 +134,16 @@ public class Auto extends LinearOpMode {
 
     /** Example shoot sequence (1 shot) */
 
-    public void moveBack() {
-        robot.setPower(1, -1, 1, -1); // fr, br, bl, fl
-        sleep(400); // WHEN AT 100% BATTERY
+    public void move() {
+        robot.setPower(-1, 1, -1, 1); // fr, br, bl, fl
+        sleep(1250); // WHEN AT 100% BATTERY
         robot.setPower(0, 0, 0, 0);
+        sleep(500);
+        robot.setPower(1, 1, -1, -1);
+        sleep(170);
+        robot.setPower(-1, 1, -1, 1); // fr, br, bl, fl
+        sleep(250);
+        robot.setPower(0,0,0,0);
     }
 
     public void shootSequence() {
