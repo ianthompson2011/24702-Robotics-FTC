@@ -3,11 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "demoTeleop")
+@TeleOp(name = "mainTeleOp")
 
 public class mainTeleOp extends LinearOpMode {
     Hardware robot = Hardware.getInstance();
-    public void runOpMode(){
+
+    public void runOpMode() {
         //once you press init
 
         robot.init(hardwareMap);
@@ -21,24 +22,25 @@ public class mainTeleOp extends LinearOpMode {
         // boolean pressingy = false;
 
         boolean difference = false;
-        while (opModeIsActive()){
+        while (opModeIsActive()) {
 
             double leftStickY = -gamepad1.left_stick_y; // Remember, this is reversed!
             double leftStickX = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double rightStickX = gamepad1.right_stick_x;
 
-            telemetry.addData("leftStick X", leftStickX );
-            telemetry.addData("leftStick Y", leftStickY );
-            telemetry.addData("rightStick X", rightStickX );
+            telemetry.addData("leftStick X", leftStickX);
+            telemetry.addData("leftStick Y", leftStickY);
+            telemetry.addData("rightStick X", rightStickX);
             telemetry.update();
 
-            drive( leftStickY, leftStickX, rightStickX );
-            initServo();
-            shoot();
-            // prepareLaunch(); if we want to do both top methods at once
+            drive(leftStickY, leftStickX, rightStickX);
+//            initServo();
+//            shoot();
+            prepareLaunch();
         }
     }
-    public void drive( double x, double y, double strafe ) {
+
+    public void drive(double x, double y, double strafe) {
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio, but only when
@@ -54,51 +56,39 @@ public class mainTeleOp extends LinearOpMode {
         robot.rf.setPower(frontRightPower);
         robot.rb.setPower(backRightPower);
     }
-    public void shoot(){
+
+    public void shoot() {
         // will initialize rs and ls with clicking A
-        if(!gamepad1.a){
+        if (!gamepad1.a) {
             robot.rs.setPower(0);
             robot.ls.setPower(0);
-        } else{
+        } else {
             robot.rs.setPower(1);
             robot.ls.setPower(1);
         }
     }
-    public void initServo(){
-//        if(!gamepad1.b){
-//            robot.demoServo1.setPosition(0);
-//            robot.demoServo2.setPosition(0);
-//        } else{
-//            robot.demoServo1.setPosition(1);
-//            robot.demoServo2.setPosition(1);
-//        }
-        if (gamepad1.dpad_left) {
-            robot.demoServo1.setPosition(0);
-            robot.demoServo2.setPosition(0);
-        }
-        else if (gamepad1.dpad_right){
+
+    public void initServo() {
+        if (!gamepad1.b) {
+            robot.demoServo1.setPosition(0.5);
+            robot.demoServo2.setPosition(0.5);
+        } else {
             robot.demoServo1.setPosition(1);
             robot.demoServo2.setPosition(1);
         }
-        else if (gamepad1.dpad_down){
-            robot.demoServo1.setPosition(0.5);
-            robot.demoServo2.setPosition(0.5);
-        }
     }
-    // We may want to put the shoot() and initServo method() in one method:
-
     public void prepareLaunch(){
         if(!gamepad1.y){
             robot.rs.setPower(0);
             robot.ls.setPower(0);
-            robot.demoServo1.setPosition(0);
-            robot.demoServo2.setPosition(0);
+            robot.demoServo1.setPosition(0.5);
+            robot.demoServo2.setPosition(0.5);
         } else{
             robot.rs.setPower(1);
             robot.ls.setPower(1);
             sleep(1000);
-            robot.demoServo1.setPosition(1);
-            robot.demoServo2.setPosition(1);
+            robot.demoServo1.setPosition(0.25);
+            robot.demoServo2.setPosition(0.25);
         }
     }
 }

@@ -16,7 +16,7 @@ public class Hardware {
     public DcMotor rs;
     public Servo demoServo1;
     public Servo demoServo2;
-    public static double maxSpeed = 0.7;
+    public static double maxSpeed = 0.85;
     private static Hardware myInstance = null;
     public static Hardware getInstance(){
         if(myInstance == null) {
