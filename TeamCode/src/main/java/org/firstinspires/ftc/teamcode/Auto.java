@@ -136,7 +136,7 @@ public class Auto extends LinearOpMode {
 
     public void moveBack() {
         robot.setPower(1, -1, 1, -1); // fr, br, bl, fl
-        sleep(200);
+        sleep(400); // WHEN AT 100% BATTERY
         robot.setPower(0, 0, 0, 0);
     }
 
@@ -146,7 +146,7 @@ public class Auto extends LinearOpMode {
         sleep(1000); // spin-up time
         robot.demoServo1.setPosition(0.25);
         robot.demoServo2.setPosition(0.25);
-        sleep(3000);
+        sleep(7000);
         robot.demoServo1.setPosition(0.5);
         robot.demoServo2.setPosition(0.5);
         robot.rs.setPower(0);
