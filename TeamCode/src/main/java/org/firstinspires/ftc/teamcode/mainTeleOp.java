@@ -35,6 +35,7 @@ public class mainTeleOp extends LinearOpMode {
             drive( leftStickY, leftStickX, rightStickX );
             initServo();
             shoot();
+            // prepareLaunch(); if we want to do both top methods at once
         }
     }
     public void drive( double x, double y, double strafe ) {
@@ -64,12 +65,24 @@ public class mainTeleOp extends LinearOpMode {
         }
     }
     public void initServo(){
-        if(!gamepad1.b){
+//        if(!gamepad1.b){
+//            robot.demoServo1.setPosition(0);
+//            robot.demoServo2.setPosition(0);
+//        } else{
+//            robot.demoServo1.setPosition(1);
+//            robot.demoServo2.setPosition(1);
+//        }
+        if (gamepad1.dpad_left) {
             robot.demoServo1.setPosition(0);
             robot.demoServo2.setPosition(0);
-        } else{
+        }
+        else if (gamepad1.dpad_right){
             robot.demoServo1.setPosition(1);
             robot.demoServo2.setPosition(1);
+        }
+        else if (gamepad1.dpad_down){
+            robot.demoServo1.setPosition(0.5);
+            robot.demoServo2.setPosition(0.5);
         }
     }
     // We may want to put the shoot() and initServo method() in one method:
@@ -83,7 +96,7 @@ public class mainTeleOp extends LinearOpMode {
         } else{
             robot.rs.setPower(1);
             robot.ls.setPower(1);
-            sleep(2000);
+            sleep(1000);
             robot.demoServo1.setPosition(1);
             robot.demoServo2.setPosition(1);
         }
