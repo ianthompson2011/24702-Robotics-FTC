@@ -24,25 +24,26 @@ public class Auto extends LinearOpMode {
         telemetry.update();
 
         // Set motors to RUN_USING_ENCODER for precision
-        robot.lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.lf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.lf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rf.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.lb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rb.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         waitForStart();
         runtime.reset();
 
         // === Autonomous Sequence Example ===
-        encoderDrive(0.5, 24, 24, 5.0);  // Move forward 24 inches
-        encoderStrafe(0.5, 12, 5.0);     // Strafe right 12 inches
-        encoderDrive(0.5, -24, -24, 5.0); // Move backward 24 inches
+        // encoderDrive(0.25, -1, -1, 5.0);  // Move backwards
+        //encoderStrafe(0.25, 1, 5.0);     // Strafe right 12 inches
+        // encoderDrive(0.5, -24, -24, 5.0); // Move backward 24 inches
 
         // Fire shooter once for example
+        moveBack();
         shootSequence();
 
         telemetry.addData("Path", "Complete");
@@ -132,6 +133,13 @@ public class Auto extends LinearOpMode {
     }
 
     /** Example shoot sequence (1 shot) */
+
+    public void moveBack() {
+        robot.setPower(1, -1, 1, -1); // fr, br, bl, fl
+        sleep(200);
+        robot.setPower(0, 0, 0, 0);
+    }
+
     public void shootSequence() {
         robot.rs.setPower(1);
         robot.ls.setPower(1);
