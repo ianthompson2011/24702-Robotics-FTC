@@ -29,11 +29,18 @@ public class Constants {
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD);
+    /*
+        We may need to reverse the encoders for unexpected behavior
+
+        .forwardEncoderDirection(Encoder.REVERSE)
+        // and/or:
+        .strafeEncoderDirection(Encoder.REVERSE)
+    */
+
     // must install pinpoint constants with builders
     // https://pedropathing.com/docs/pathing/tuning/localization/pinpoint
 
-    // give currect values for pinpoint constants
-
+    // give correct values for pinpoint constants
     public static PinpointConstants localizerConstants = new PinpointConstants()
             .forwardPodY(-5)
             .strafePodX(0.5)
