@@ -29,23 +29,23 @@ public class Hardware {
     public void init(HardwareMap hwMap){
         //this will initialize motors
 
-        lf = hwMap.get(DcMotor.class, "cm0");
+        lf = hwMap.get(DcMotor.class, "cm2");
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lf.setDirection(DcMotorSimple.Direction.REVERSE);
         lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         lf.setPower(0);
 
-        rf = hwMap.get(DcMotor.class, "cm1");
+        rf = hwMap.get(DcMotor.class, "cm3");
         rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rf.setPower(0);
 
-        rb = hwMap.get(DcMotor.class, "cm2");
+        rb = hwMap.get(DcMotor.class, "cm0");
         rb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rb.setPower(0);
 
-        lb = hwMap.get(DcMotor.class, "cm3");
+        lb = hwMap.get(DcMotor.class, "cm1");
         lb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lb.setDirection(DcMotorSimple.Direction.REVERSE);
         lb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
