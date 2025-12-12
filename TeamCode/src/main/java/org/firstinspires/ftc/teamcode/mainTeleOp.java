@@ -99,8 +99,8 @@ public class mainTeleOp extends LinearOpMode {
             robot.rs.setPower(1);
             robot.ls.setPower(1);
             sleep(1000);
-            robot.demoServo1.setPosition(0.25);
-            robot.demoServo2.setPosition(0.25);
+            robot.demoServo1.setPosition(0.75);
+            robot.demoServo2.setPosition(0.75);
 
         }
     }
