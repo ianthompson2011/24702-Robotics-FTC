@@ -16,6 +16,9 @@ public class Hardware {
     public DcMotor rs;
     public Servo demoServo1;
     public Servo demoServo2;
+    //dalton's intake motor
+    public DcMotor it;
+
     public static double maxSpeed = 0.85;
     private static Hardware myInstance = null;
     public static Hardware getInstance(){
@@ -62,6 +65,13 @@ public class Hardware {
         rs.setDirection(DcMotorSimple.Direction.REVERSE);
         rs.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rs.setPower(0);
+
+        //motor for intake
+        it = hwMap.get(DcMotor.class, "em2");
+        it.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        it.setDirection(DcMotorSimple.Direction.REVERSE);
+        it.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        it.setPower(0);
 
         // initialize Servo
         demoServo1 = hwMap.get(Servo.class, "cs0");
