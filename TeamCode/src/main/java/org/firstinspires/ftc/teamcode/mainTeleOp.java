@@ -34,11 +34,8 @@ public class mainTeleOp extends LinearOpMode {
             telemetry.update();
 
             drive(leftStickY, leftStickX, rightStickX);
-//            initServo();
-//            shoot();
-            prepareLaunch();
             initIntake();
-            initIntakeShoot();
+            prepareLaunch();
         }
     }
 
@@ -88,28 +85,52 @@ public class mainTeleOp extends LinearOpMode {
             robot.it.setPower(1);
         }
     }
-    public void initIntakeShoot() {
-        if (!gamepad1.y) {
-            robot.it.setPower(0);
-        } else {
-            robot.it.setPower(1);
+//    public void initIntakeShoot() {
+//        if (!gamepad1.y) {
+//            robot.it.setPower(0);
+//        } else {
+//            robot.it.setPower(1);
+//        }
+//    }
+
+
+//    public void prepareLaunch(){
+//        if(!gamepad1.y){
+//            robot.it.setPower(0);
+//            robot.rs.setPower(0);
+//            robot.ls.setPower(0);
+//            robot.demoServo1.setPosition(0.5);
+//        } else{
+//            robot.it.setPower(1);
+//            robot.rs.setPower(1);
+//            robot.ls.setPower(1);
+//            sleep(1000);
+//            for(int i = 1; i <= 3; i++) {
+//                robot.demoServo1.setPosition(0.75);
+//                sleep(450);
+//                robot.demoServo1.setPosition(0.5);
+//                sleep(600);
+//            }
+
+            //this code is basically the same but when you let go of y it stops the loop
+
+            public void prepareLaunch(){
+                if(!gamepad1.y){
+                    robot.it.setPower(0);
+                    robot.rs.setPower(0);
+                    robot.ls.setPower(0);
+                    robot.demoServo1.setPosition(0.5);
+                } else{
+                    robot.it.setPower(1);
+                    robot.rs.setPower(1);
+                    robot.ls.setPower(1);
+                    sleep(1070);
+                        robot.demoServo1.setPosition(0.75);
+                        sleep(516);
+                        robot.demoServo1.setPosition(0.5);
+
+                    }
+
         }
     }
 
-
-    public void prepareLaunch(){
-        if(!gamepad1.y){
-            robot.rs.setPower(0);
-            robot.ls.setPower(0);
-            robot.demoServo1.setPosition(0.5);
-
-        } else{
-            robot.rs.setPower(1);
-            robot.ls.setPower(1);
-            sleep(1000);
-            robot.demoServo1.setPosition(0.75);
-
-
-        }
-    }
-}
