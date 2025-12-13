@@ -35,6 +35,7 @@ public class mainTeleOp extends LinearOpMode {
 
             drive(leftStickY, leftStickX, rightStickX);
             initIntake();
+            moveBallsOut();
             prepareLaunch();
         }
     }
@@ -56,26 +57,26 @@ public class mainTeleOp extends LinearOpMode {
         robot.rb.setPower(backRightPower);
     }
 
-    public void shoot() {
-        // will initialize rs and ls with clicking A
-        if (!gamepad1.a) {
-            robot.rs.setPower(0);
-            robot.ls.setPower(0);
-        } else {
-            robot.rs.setPower(1);
-            robot.ls.setPower(1);
-        }
-    }
+//    public void shoot() {
+//        // will initialize rs and ls with clicking A
+//        if (!gamepad1.a) {
+//            robot.rs.setPower(0);
+//            robot.ls.setPower(0);
+//        } else {
+//            robot.rs.setPower(1);
+//            robot.ls.setPower(1);
+//        }
+//    }
 
-    public void initServo() {
-        if (!gamepad1.b) {
-            robot.demoServo1.setPosition(0.5);
-            robot.demoServo2.setPosition(0.5);
-        } else {
-            robot.demoServo1.setPosition(1);
-            robot.demoServo2.setPosition(1);
-        }
-    }
+//    public void initServo() {
+//        if (!gamepad1.b) {
+//            robot.demoServo1.setPosition(0.5);
+//            robot.demoServo2.setPosition(0.5);
+//        } else {
+//            robot.demoServo1.setPosition(1);
+//            robot.demoServo2.setPosition(1);
+//        }
+//    }
 
     //intake code
     public void initIntake() {
@@ -83,6 +84,20 @@ public class mainTeleOp extends LinearOpMode {
             robot.it.setPower(0);
         } else {
             robot.it.setPower(1);
+        }
+    }
+
+    public void moveBallsOut(){
+        if (!gamepad1.left_bumper) {
+            robot.it.setPower(0);
+            robot.rs.setPower(0);
+            robot.ls.setPower(0);
+            robot.demoServo1.setPosition(0.5);
+        } else {
+            robot.it.setPower(-1);
+            robot.rs.setPower(-1);
+            robot.ls.setPower(-1);
+            robot.demoServo1.setPosition(0.25);
         }
     }
 //    public void initIntakeShoot() {
@@ -120,16 +135,15 @@ public class mainTeleOp extends LinearOpMode {
                     robot.rs.setPower(0);
                     robot.ls.setPower(0);
                     robot.demoServo1.setPosition(0.5);
-                } else{
+                } else {
                     robot.it.setPower(1);
                     robot.rs.setPower(1);
                     robot.ls.setPower(1);
-                    sleep(1070);
-                        robot.demoServo1.setPosition(0.75);
-                        sleep(516);
-                        robot.demoServo1.setPosition(0.5);
-
-                    }
+                    sleep(1500);
+                    robot.demoServo1.setPosition(0.75);
+                    sleep(516);
+                    robot.demoServo1.setPosition(0.5);
+                }
 
         }
     }

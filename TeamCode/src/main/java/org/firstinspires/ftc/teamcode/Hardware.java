@@ -72,7 +72,6 @@ public class Hardware {
         it.setDirection(DcMotorSimple.Direction.REVERSE);
         it.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         it.setPower(0);
-
         // initialize Servo
         demoServo1 = hwMap.get(Servo.class, "cs0");
         demoServo2 = hwMap.get(Servo.class, "cs1");

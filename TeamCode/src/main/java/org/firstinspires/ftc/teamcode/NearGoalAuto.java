@@ -46,7 +46,7 @@ public class NearGoalAuto extends LinearOpMode {
         moveBack();
         // shootSequence(); old shooter
         prepareLaunch();
-        initIntake();
+        initInTake();
         initIntakeShoot();
 
         telemetry.addData("Path", "Complete");
@@ -143,25 +143,26 @@ public class NearGoalAuto extends LinearOpMode {
         robot.setPower(0, 0, 0, 0);
     }
 
-    public void shootSequence() {
-        robot.rs.setPower(1);
-        robot.ls.setPower(1);
-        sleep(1000); // spin-up time
-        robot.demoServo1.setPosition(0.25);
-        robot.demoServo2.setPosition(0.25);
-        sleep(7000);
-        robot.demoServo1.setPosition(0.5);
-        robot.demoServo2.setPosition(0.5);
-        robot.rs.setPower(0);
-        robot.ls.setPower(0);
-    }
-    public void initIntake() {
+//    public void shootSequence() {
+//        robot.rs.setPower(1);
+//        robot.ls.setPower(1);
+//        sleep(1000); // spin-up time
+//        robot.demoServo1.setPosition(0.25);
+//        robot.demoServo2.setPosition(0.25);
+//        sleep(7000);
+//        robot.demoServo1.setPosition(0.5);
+//        robot.demoServo2.setPosition(0.5);
+//        robot.rs.setPower(0);
+//        robot.ls.setPower(0);
+//    }
+    public void initInTake() {
         if (!gamepad1.right_bumper) {
             robot.it.setPower(0);
         } else {
             robot.it.setPower(1);
         }
     }
+
     public void initIntakeShoot() {
         if (!gamepad1.y) {
             robot.it.setPower(0);
