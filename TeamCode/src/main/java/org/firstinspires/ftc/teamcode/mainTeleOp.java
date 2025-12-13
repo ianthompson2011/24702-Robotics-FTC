@@ -36,8 +36,9 @@ public class mainTeleOp extends LinearOpMode {
             drive(leftStickY, leftStickX, rightStickX);
 //            initServo();
 //            shoot();
+            prepareLaunch();
             initIntake();
-
+            initIntakeShoot();
         }
     }
 
@@ -87,6 +88,13 @@ public class mainTeleOp extends LinearOpMode {
             robot.it.setPower(1);
         }
     }
+    public void initIntakeShoot() {
+        if (!gamepad1.y) {
+            robot.it.setPower(0);
+        } else {
+            robot.it.setPower(1);
+        }
+    }
 
 
     public void prepareLaunch(){
@@ -94,13 +102,13 @@ public class mainTeleOp extends LinearOpMode {
             robot.rs.setPower(0);
             robot.ls.setPower(0);
             robot.demoServo1.setPosition(0.5);
-            robot.demoServo2.setPosition(0.5);
+
         } else{
             robot.rs.setPower(1);
             robot.ls.setPower(1);
             sleep(1000);
             robot.demoServo1.setPosition(0.75);
-            robot.demoServo2.setPosition(0.75);
+
 
         }
     }
