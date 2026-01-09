@@ -141,7 +141,7 @@ public class FarGoalAutoRight extends LinearOpMode {
         robot.setPower(0, 0, 0, 0);
         sleep(500);
         robot.setPower(-1, -1, 1, 1);
-        sleep(170);
+        sleep(210);
         robot.setPower(-1, 1, -1, 1); // fr, br, bl, fl
         sleep(250);
         robot.setPower(0,0,0,0);
