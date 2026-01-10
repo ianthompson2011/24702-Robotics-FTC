@@ -35,8 +35,10 @@ public class mainTeleOp extends LinearOpMode {
 
             drive(leftStickY, leftStickX, rightStickX);
 //            initServo();
-//            shoot();
+//            shoot();'
+            removeBalls();
             initIntake();
+            prepareLaunch();
 
         }
     }
@@ -85,6 +87,22 @@ public class mainTeleOp extends LinearOpMode {
             robot.it.setPower(0);
         } else {
             robot.it.setPower(1);
+            robot.demoServo1.setPosition(0.25);
+            robot.demoServo2.setPosition(0.25);
+            robot.rs.setPower(1);
+            robot.ls.setPower(1);
+        }
+    }
+
+    public void removeBalls() {
+        if (!gamepad1.left_bumper) {
+            robot.it.setPower(0);
+        } else {
+            robot.it.setPower(-1);
+            robot.demoServo1.setPosition(0.25);
+            robot.demoServo2.setPosition(0.25);
+            robot.rs.setPower(1);
+            robot.ls.setPower(1);
         }
     }
 
@@ -93,15 +111,20 @@ public class mainTeleOp extends LinearOpMode {
         if(!gamepad1.y){
             robot.rs.setPower(0);
             robot.ls.setPower(0);
+            robot.it.setPower(0);
             robot.demoServo1.setPosition(0.5);
-            robot.demoServo2.setPosition(0.5);
         } else{
-            robot.rs.setPower(1);
-            robot.ls.setPower(1);
-            sleep(1000);
+            // if pressing x, shooting power will lower slightly
+            robot.rs.setPower(gamepad1.x ? -0.55 : -0.6);
+            robot.ls.setPower(gamepad1.x ? -0.55 : -0.6);
+            sleep(1250);
+            robot.it.setPower(1);
+            sleep(1500);
+            robot.demoServo1.setPosition(0.75);
+            sleep(750);
             robot.demoServo1.setPosition(0.25);
-            robot.demoServo2.setPosition(0.25);
-
+            sleep(500);
+            robot.demoServo1.setPosition(0.5);
         }
     }
 }

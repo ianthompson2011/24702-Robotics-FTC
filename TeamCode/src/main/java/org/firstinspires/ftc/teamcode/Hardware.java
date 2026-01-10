@@ -55,6 +55,7 @@ public class Hardware {
         lb.setPower(0);
 
         // motors for shooters
+
         ls = hwMap.get(DcMotor.class, "em0");
         ls.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ls.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -66,7 +67,8 @@ public class Hardware {
         rs.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rs.setPower(0);
 
-        //motor for intake
+        // motor for intake
+
         it = hwMap.get(DcMotor.class, "em2");
         it.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         it.setDirection(DcMotorSimple.Direction.REVERSE);

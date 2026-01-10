@@ -2,11 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "FarGoalAutoRight", group = "Robot")
-public class FarGoalAutoRight extends LinearOpMode {
+@Autonomous(name = "DoNothingAuto", group = "Robot")
+public class DoNothingAuto extends LinearOpMode {
     Hardware robot = Hardware.getInstance();
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -28,7 +28,6 @@ public class FarGoalAutoRight extends LinearOpMode {
 //        robot.rf.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        robot.lb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        robot.rb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //
 
         robot.lf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.rf.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -44,8 +43,8 @@ public class FarGoalAutoRight extends LinearOpMode {
         // encoderDrive(0.5, -24, -24, 5.0); // Move backward 24 inches
 
         // Fire shooter once for example
-        move();
-        shootSequence();
+        moveBack();
+        // shootSequence();
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -135,16 +134,10 @@ public class FarGoalAutoRight extends LinearOpMode {
 
     /** Example shoot sequence (1 shot) */
 
-    public void move() {
+    public void moveBack() {
         robot.setPower(-1, 1, -1, 1); // fr, br, bl, fl
-        sleep(1250); // WHEN AT 100% BATTERY
+        sleep(200); // WHEN AT 100% BATTERY
         robot.setPower(0, 0, 0, 0);
-        sleep(500);
-        robot.setPower(-1, -1, 1, 1);
-        sleep(140);
-        robot.setPower(-1, 1, -1, 1); // fr, br, bl, fl
-        sleep(250);
-        robot.setPower(0,0,0,0);
     }
 
     public void shootSequence(){
@@ -154,7 +147,7 @@ public class FarGoalAutoRight extends LinearOpMode {
         robot.it.setPower(1);
         sleep(1500);
         robot.demoServo1.setPosition(0.75);
-        sleep(1750);
+        sleep(750);
         robot.demoServo1.setPosition(0.25);
         sleep(500);
         robot.demoServo1.setPosition(0.5);
