@@ -140,22 +140,20 @@ public class FarGoalAutoLeft extends LinearOpMode {
         robot.setPower(0, 0, 0, 0);
         sleep(500);
         robot.setPower(1, 1, -1, -1);
-        sleep(210);
-        robot.setPower(-1, 1, -1, 1); // fr, br, bl, fl
-        sleep(250);
+        sleep(140);
         robot.setPower(0,0,0,0);
     }
 
-    public void shootSequence() {
-        robot.rs.setPower(1);
-        robot.ls.setPower(1);
-        sleep(1000); // spin-up time
+    public void shootSequence(){
+        robot.rs.setPower(-0.6);
+        robot.ls.setPower(-0.6);
+        sleep(1250);
+        robot.it.setPower(1);
+        sleep(1500);
+        robot.demoServo1.setPosition(0.75);
+        sleep(1750);
         robot.demoServo1.setPosition(0.25);
-        robot.demoServo2.setPosition(0.25);
-        sleep(7000);
+        sleep(500);
         robot.demoServo1.setPosition(0.5);
-        robot.demoServo2.setPosition(0.5);
-        robot.rs.setPower(0);
-        robot.ls.setPower(0);
     }
 }

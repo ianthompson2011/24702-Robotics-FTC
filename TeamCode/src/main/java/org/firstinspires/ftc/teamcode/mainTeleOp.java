@@ -114,8 +114,9 @@ public class mainTeleOp extends LinearOpMode {
             robot.it.setPower(0);
             robot.demoServo1.setPosition(0.5);
         } else{
-            robot.rs.setPower(-0.6);
-            robot.ls.setPower(-0.6);
+            // if pressing x, shooting power will lower slightly
+            robot.rs.setPower(gamepad1.x ? -0.55 : -0.6);
+            robot.ls.setPower(gamepad1.x ? -0.55 : -0.6);
             sleep(1250);
             robot.it.setPower(1);
             sleep(1500);
