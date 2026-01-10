@@ -89,6 +89,8 @@ public class mainTeleOp extends LinearOpMode {
             robot.it.setPower(1);
             robot.demoServo1.setPosition(0.25);
             robot.demoServo2.setPosition(0.25);
+            robot.rs.setPower(1);
+            robot.ls.setPower(1);
         }
     }
 
@@ -99,6 +101,8 @@ public class mainTeleOp extends LinearOpMode {
             robot.it.setPower(-1);
             robot.demoServo1.setPosition(0.25);
             robot.demoServo2.setPosition(0.25);
+            robot.rs.setPower(1);
+            robot.ls.setPower(1);
         }
     }
 
@@ -109,15 +113,17 @@ public class mainTeleOp extends LinearOpMode {
             robot.ls.setPower(0);
             robot.it.setPower(0);
             robot.demoServo1.setPosition(0.5);
-            robot.demoServo2.setPosition(0.5);
         } else{
             robot.rs.setPower(-0.6);
             robot.ls.setPower(-0.6);
-            sleep(1500);
+            sleep(1250);
             robot.it.setPower(1);
+            sleep(1500);
             robot.demoServo1.setPosition(0.75);
-            sleep(516);
-            robot.demoServo2.setPosition(0.75);
+            sleep(750);
+            robot.demoServo1.setPosition(0.25);
+            sleep(500);
+            robot.demoServo1.setPosition(0.5);
         }
     }
 }
