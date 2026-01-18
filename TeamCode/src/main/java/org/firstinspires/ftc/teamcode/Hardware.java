@@ -15,22 +15,21 @@ public class Hardware {
     public DcMotor ls;
     public DcMotor rs;
     public Servo demoServo1;
-    public Servo demoServo2;
-    //dalton's intake motor
     public DcMotor it;
 
     public static double maxSpeed = 0.85;
+    // slightly lowered speed to prevent feeling of being overly reactive
     private static Hardware myInstance = null;
     public static Hardware getInstance(){
         if(myInstance == null) {
             myInstance = new Hardware();
-
-
         }
         return myInstance;
     }
     public void init(HardwareMap hwMap){
-        //this will initialize motors
+
+        // motors for wheels
+        // in this order, left front, right front, right back, left back
 
         lf = hwMap.get(DcMotor.class, "cm2");
         lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -67,7 +66,7 @@ public class Hardware {
         rs.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rs.setPower(0);
 
-        // motor for intake
+        // motor for intake, controls rubber bands
 
         it = hwMap.get(DcMotor.class, "em2");
         it.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -75,19 +74,14 @@ public class Hardware {
         it.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         it.setPower(0);
 
-        // initialize Servo
+        // servos to push balls up to rs and ls motors
         demoServo1 = hwMap.get(Servo.class, "cs0");
-        demoServo2 = hwMap.get(Servo.class, "cs1");
-        // MAKE SURE THAT THESE SERVOS ON CONFIGURED ON ANDROID DEVICE
     }
+    // update power levels and stay in safe operational limits
     public void setPower(double fr, double br, double bl, double fl){
         rf.setPower(Range.clip(fr, -maxSpeed, maxSpeed));
         lf.setPower(Range.clip(fl, -maxSpeed, maxSpeed));
         rb.setPower(Range.clip(br, -maxSpeed, maxSpeed));
         lb.setPower(Range.clip(bl, -maxSpeed, maxSpeed));
-
     }
 }
-//time based: uses time, does not account for slippage
-// encoder: counts ticks to get to position, slipage
-//odometry corrects position
