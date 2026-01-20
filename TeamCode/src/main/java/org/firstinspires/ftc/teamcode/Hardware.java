@@ -15,7 +15,11 @@ public class Hardware {
     public DcMotor ls;
     public DcMotor rs;
     public Servo demoServo1;
+
     public DcMotor it;
+
+    // pedro pathing pinpoint
+    // we might need pinpoint mapped onto i2c 0
 
     public static double maxSpeed = 0.85;
     // slightly lowered speed to prevent feeling of being overly reactive

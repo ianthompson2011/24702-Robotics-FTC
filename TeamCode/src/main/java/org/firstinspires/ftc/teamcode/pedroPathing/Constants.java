@@ -29,27 +29,17 @@ public class Constants {
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD);
-    /*
-        We may need to reverse the encoders for unexpected behavior
 
-        .forwardEncoderDirection(Encoder.REVERSE)
-        // and/or:
-        .strafeEncoderDirection(Encoder.REVERSE)
-    */
-
-    // must install pinpoint constants with builders
-    // https://pedropathing.com/docs/pathing/tuning/localization/pinpoint
-
-    // give correct values for pinpoint constants
     public static PinpointConstants localizerConstants = new PinpointConstants()
-            .forwardPodY(-5)
-            .strafePodX(0.5)
-            .distanceUnit(DistanceUnit.INCH)
-            //Make sure to replace the pinpoint hardware map name with the actual name.
+            .forwardPodY(2.48) // both must be in inches
+            .strafePodX(3.5) // if pedro pathing does not work, this might be why, ensure proper measurements
+            .distanceUnit(DistanceUnit.MM)
+            // Make sure to replace the pinpoint hardware map name with the actual name.
             .hardwareMapName("pinpoint")
             .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
             .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
             .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
+
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)
                 .pathConstraints(pathConstraints)
