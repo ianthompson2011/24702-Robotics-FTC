@@ -17,7 +17,7 @@ public class Constants {
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(5); // update the mass in kilos for the robot when complete!!!
+            .mass(10.25); // update the mass in kilos for the robot when complete!!!
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
