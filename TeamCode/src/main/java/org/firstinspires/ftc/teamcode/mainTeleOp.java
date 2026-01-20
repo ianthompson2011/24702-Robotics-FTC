@@ -33,8 +33,6 @@ public class mainTeleOp extends LinearOpMode {
             removeBalls();
             initIntake();
             prepareLaunch();
-
-            // all methods are defined below
         }
     }
     public void drive(double x, double y, double strafe) {
