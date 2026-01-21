@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class Hardware {
 
@@ -12,8 +13,8 @@ public class Hardware {
     public DcMotor lf;
     public DcMotor rb;
     public DcMotor lb;
-    public DcMotor ls;
-    public DcMotor rs;
+    public DcMotorEx ls;
+    public DcMotorEx rs;
     public Servo demoServo1;
 
     public DcMotor it;
@@ -59,15 +60,17 @@ public class Hardware {
 
         // motors for shooters
 
-        ls = hwMap.get(DcMotor.class, "em0");
-        ls.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        ls.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        ls = hwMap.get(DcMotorEx.class, "em0");
+        ls.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
+        ls.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ls.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ls.setPower(0);
 
-        rs = hwMap.get(DcMotor.class, "em1");
-        rs.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rs = hwMap.get(DcMotorEx.class, "em1");
+        rs.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
         rs.setDirection(DcMotorSimple.Direction.REVERSE);
-        rs.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rs.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rs.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rs.setPower(0);
 
         // motor for intake, controls rubber bands

@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 public class mainTeleOp extends LinearOpMode {
     Hardware robot = Hardware.getInstance();
+    private static final double HIGH_GOAL_VELOCITY = 2800; // ticks/sec
+    private static final double LOW_GOAL_VELOCITY  = 2500; // ticks/sec
+    private static final double READY_PERCENT = 0.95; // 95%
 
     public void runOpMode() {
         //once you press init
@@ -33,6 +36,10 @@ public class mainTeleOp extends LinearOpMode {
             removeBalls();
             initIntake();
             prepareLaunch();
+            //debug telemetry
+            telemetry.addData("RS Velocity", robot.rs.getVelocity());
+            telemetry.addData("LS Velocity", robot.ls.getVelocity());
+            telemetry.update();
         }
     }
     public void drive(double x, double y, double strafe) {
@@ -80,34 +87,70 @@ public class mainTeleOp extends LinearOpMode {
             robot.ls.setPower(1);
         }
     }
-    public void prepareLaunch(){
-        if(!gamepad1.y){
-            // make sure nothing is moving without driver input
-            robot.rs.setPower(0);
-            robot.ls.setPower(0);
-            robot.it.setPower(0);
-            robot.demoServo1.setPosition(0.5);
-        } else{
-            // if pressing x, shooting power will lower slightly
-            robot.rs.setPower(gamepad1.x ? -0.55 : -0.6);
-            robot.ls.setPower(gamepad1.x ? -0.55 : -0.6);
-            // allow motors to reach max speed before moving balls
-            sleep(1250);
+//    public void prepareLaunch(){
+//        if(!gamepad1.y){
+//            // make sure nothing is moving without driver input
+//            robot.rs.setVelocity(0);
+//            robot.ls.setVelocity(0);
+//            robot.it.setPower(0);
+//            robot.demoServo1.setPosition(0.5);
+//        } else{
+//
+//            // if pressing x, shooting power will lower slightly
+//            robot.rs.setPower(gamepad1.x ? -0.55 : -0.6);
+//            robot.ls.setPower(gamepad1.x ? -0.55 : -0.6);
+//            // allow motors to reach max speed before moving balls
+//            sleep(1250);
+//
+//            robot.it.setPower(1);
+//            sleep(1500);
+//            // begin moving rubber bands to move balls up
+//
+//            robot.demoServo1.setPosition(0.75);
+//            sleep(750);
+//            // move servos to get balls prepared for shot
+//
+//            robot.demoServo1.setPosition(0.25);
+//            sleep(500);
+//            // move servos backwards to prevent balls from moving out too fast
+//
+//            // stop servos to stop entire method
+//            robot.demoServo1.setPosition(0.5);
+//        }
+//    }
+public void prepareLaunch() {
 
+    if (!gamepad1.y) {
+        // make sure nothing is moving without driver input
+        robot.rs.setVelocity(0);
+        robot.ls.setVelocity(0);
+        robot.it.setPower(0);
+        robot.demoServo1.setPosition(0.5);
+
+    } else {
+        // velocity targets (tune these)
+        double HIGH_VELOCITY = 2800;
+        double LOW_VELOCITY  = 2500;
+
+        double targetVelocity = gamepad1.x ? LOW_VELOCITY : HIGH_VELOCITY;
+
+        // spin up shooters using encoders
+        robot.rs.setVelocity(-targetVelocity);
+        robot.ls.setVelocity(-targetVelocity);
+
+        // only feed balls once shooter is up to speed
+        boolean shooterReady =
+                Math.abs(robot.rs.getVelocity()) > targetVelocity * 0.95 &&
+                        Math.abs(robot.ls.getVelocity()) > targetVelocity * 0.95;
+
+        if (shooterReady) {
             robot.it.setPower(1);
-            sleep(1500);
-            // begin moving rubber bands to move balls up
-
             robot.demoServo1.setPosition(0.75);
-            sleep(750);
-            // move servos to get balls prepared for shot
-
-            robot.demoServo1.setPosition(0.25);
-            sleep(500);
-            // move servos backwards to prevent balls from moving out too fast
-
-            // stop servos to stop entire method
+        } else {
+            robot.it.setPower(0);
             robot.demoServo1.setPosition(0.5);
         }
     }
+
+}
 }
