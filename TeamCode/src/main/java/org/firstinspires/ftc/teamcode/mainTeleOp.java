@@ -35,7 +35,9 @@ public class mainTeleOp extends LinearOpMode {
             drive(leftStickY, leftStickX, rightStickX);
             removeBalls();
             initIntake();
+            initIntakeForShot();
             prepareLaunch();
+
             //debug telemetry
             telemetry.addData("RS Velocity", robot.rs.getVelocity());
             telemetry.addData("LS Velocity", robot.ls.getVelocity());
@@ -60,21 +62,6 @@ public class mainTeleOp extends LinearOpMode {
         robot.rb.setPower(backRightPower);
     }
 
-    // intake code
-    public void initIntake() {
-        if (!gamepad1.right_bumper) {
-            robot.it.setPower(0);
-            // make sure rubber bands don't move without input
-        } else {
-            // move motors for rubber bands, move servos up
-            robot.it.setPower(1);
-            robot.demoServo1.setPosition(0.25);
-            // prevent balls from falling out by reversing shooting motors
-            robot.rs.setPower(1);
-            robot.ls.setPower(1);
-        }
-    }
-
     // if balls get stuck during intake, this method moves them back out as a wost case scenario
     // effectively the opposite of initIntake()
     public void removeBalls() {
@@ -82,42 +69,36 @@ public class mainTeleOp extends LinearOpMode {
             robot.it.setPower(0);
         } else {
             robot.it.setPower(-1);
-            robot.demoServo1.setPosition(0.25);
-            robot.rs.setPower(1);
-            robot.ls.setPower(1);
+            robot.demoServo1.setPosition(0);
         }
     }
-//    public void prepareLaunch(){
-//        if(!gamepad1.y){
-//            // make sure nothing is moving without driver input
-//            robot.rs.setVelocity(0);
-//            robot.ls.setVelocity(0);
-//            robot.it.setPower(0);
-//            robot.demoServo1.setPosition(0.5);
-//        } else{
-//
-//            // if pressing x, shooting power will lower slightly
-//            robot.rs.setPower(gamepad1.x ? -0.55 : -0.6);
-//            robot.ls.setPower(gamepad1.x ? -0.55 : -0.6);
-//            // allow motors to reach max speed before moving balls
-//            sleep(1250);
-//
-//            robot.it.setPower(1);
-//            sleep(1500);
-//            // begin moving rubber bands to move balls up
-//
-//            robot.demoServo1.setPosition(0.75);
-//            sleep(750);
-//            // move servos to get balls prepared for shot
-//
-//            robot.demoServo1.setPosition(0.25);
-//            sleep(500);
-//            // move servos backwards to prevent balls from moving out too fast
-//
-//            // stop servos to stop entire method
-//            robot.demoServo1.setPosition(0.5);
-//        }
-//    }
+
+    public void initIntake(){
+        if (!gamepad1.right_bumper) {
+            robot.it.setPower(0);
+            // make sure rubber bands don't move without input
+        } else {
+            // move motors for rubber bands, move servos up
+            robot.it.setPower(1);
+            robot.demoServo1.setPosition(0);
+            // prevent balls from falling out by reversing shooting motors
+        }
+    }
+
+    // intake code
+    public void initIntakeForShot() {
+        if (!gamepad1.dpad_up) {
+            robot.it.setPower(0);
+            // make sure rubber bands don't move without input
+        } else {
+            // move motors for rubber bands, move servos up
+            robot.it.setPower(1);
+            robot.demoServo1.setPosition(0.75);
+            // prevent balls from falling out by reversing shooting motors
+            robot.rs.setVelocity(2500);
+            robot.ls.setVelocity(2500);
+        }
+    }
 public void prepareLaunch() {
 
     if (!gamepad1.y) {
@@ -129,8 +110,8 @@ public void prepareLaunch() {
 
     } else {
         // velocity targets (tune these)
-        double HIGH_VELOCITY = 2800;
-        double LOW_VELOCITY  = 2500;
+        double HIGH_VELOCITY = 1500;
+        double LOW_VELOCITY  = 1200;
 
         double targetVelocity = gamepad1.x ? LOW_VELOCITY : HIGH_VELOCITY;
 
@@ -145,7 +126,7 @@ public void prepareLaunch() {
 
         if (shooterReady) {
             robot.it.setPower(1);
-            robot.demoServo1.setPosition(0.75);
+            robot.demoServo1.setPosition(0.25);
         } else {
             robot.it.setPower(0);
             robot.demoServo1.setPosition(0.5);
