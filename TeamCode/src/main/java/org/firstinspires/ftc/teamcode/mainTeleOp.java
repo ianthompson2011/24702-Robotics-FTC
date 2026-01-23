@@ -4,18 +4,24 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name = "mainTeleOp")
-
 public class mainTeleOp extends LinearOpMode {
+
     Hardware robot = Hardware.getInstance();
 
+    // shooter velocities (ticks/sec)
+    private static final double HIGH_VELOCITY = 1500;
+    private static final double LOW_VELOCITY  = 1400;
+    private static final double READY_PERCENT = 0.95;
+
+
+    @Override
     public void runOpMode() {
-        //once you press init
 
         robot.init(hardwareMap);
-        telemetry.addData("Status", "Hello, Drivers!");
+
+        telemetry.addData("Status", "Ready");
         telemetry.update();
 
-        // waiting for start until "play" is pressed
         waitForStart();
 
         while (opModeIsActive()) {
@@ -24,19 +30,22 @@ public class mainTeleOp extends LinearOpMode {
             double leftStickX = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double rightStickX = gamepad1.right_stick_x;
 
-            telemetry.addData("leftStick X", leftStickX);
-            telemetry.addData("leftStick Y", leftStickY);
-            telemetry.addData("rightStick X", rightStickX);
-            telemetry.update();
-
             drive(leftStickY, leftStickX, rightStickX);
-            removeBalls();
-            initIntake();
-            prepareLaunch();
 
-            // all methods are defined below
+            // ---------------- INTAKE ----------------
+            handleIntake();
+
+            // ---------------- SHOOTER ----------------
+            handleShooter();
+
+            // ---------------- TELEMETRY ----------------
+            telemetry.addData("RS Velocity", robot.rs.getVelocity());
+            telemetry.addData("LS Velocity", robot.ls.getVelocity());
+            telemetry.update();
         }
     }
+
+    // ---------------- DRIVE ----------------
     public void drive(double x, double y, double strafe) {
 
         // Denominator is the largest motor power (absolute value) or 1
@@ -55,60 +64,57 @@ public class mainTeleOp extends LinearOpMode {
         robot.rb.setPower(backRightPower);
     }
 
-    // intake code
-    public void initIntake() {
-        if (!gamepad1.right_bumper) {
-            robot.it.setPower(0);
-            // make sure rubber bands don't move without input
-        } else {
-            // move motors for rubber bands, move servos up
-            robot.it.setPower(1);
-            robot.demoServo1.setPosition(0.25);
-            // prevent balls from falling out by reversing shooting motors
-            robot.rs.setPower(1);
-            robot.ls.setPower(1);
-        }
-    }
+    // ---------------- INTAKE ONLY ----------------
+    private void handleIntake() {
 
-    // if balls get stuck during intake, this method moves them back out as a wost case scenario
-    // effectively the opposite of initIntake()
-    public void removeBalls() {
-        if (!gamepad1.left_bumper) {
-            robot.it.setPower(0);
-        } else {
+        if (gamepad1.left_bumper) {
+            // reverse intake (unstick balls)
             robot.it.setPower(-1);
-            robot.demoServo1.setPosition(0.25);
-            robot.rs.setPower(1);
-            robot.ls.setPower(1);
-        }
-    }
-    public void prepareLaunch(){
-        if(!gamepad1.y){
-            // make sure nothing is moving without driver input
-            robot.rs.setPower(0);
-            robot.ls.setPower(0);
+            robot.demoServo1.setPosition(0);
+        } else if (gamepad1.right_bumper) {
+            // normal intake
+            robot.it.setPower(1);
+            robot.demoServo1.setPosition(0);
+        } else if (gamepad1.dpad_up){
+            // ready for shooting
+            robot.it.setPower(1);
+            robot.demoServo1.setPosition(1);
+        } else {
             robot.it.setPower(0);
             robot.demoServo1.setPosition(0.5);
-        } else{
-            // if pressing x, shooting power will lower slightly
-            robot.rs.setPower(gamepad1.x ? -0.55 : -0.6);
-            robot.ls.setPower(gamepad1.x ? -0.55 : -0.6);
-            // allow motors to reach max speed before moving balls
-            sleep(1250);
+        }
+    }
 
+    // ---------------- SHOOTER ONLY ----------------
+    private void handleShooter() {
+
+        if (!gamepad1.y) {
+            // shooter OFF
+            robot.rs.setVelocity(0);
+            robot.ls.setVelocity(0);
+            robot.demoServo1.setPosition(0.5);
+            return;
+        }
+
+        // choose velocity
+        double targetVelocity = gamepad1.x ? LOW_VELOCITY : HIGH_VELOCITY;
+
+        // NOTE:
+        // rs is REVERSED in hardware
+        // ls is FORWARD
+        // both use POSITIVE velocity
+        robot.rs.setVelocity(-targetVelocity);
+        robot.ls.setVelocity(-targetVelocity);
+
+        boolean shooterReady =
+                Math.abs(robot.rs.getVelocity()) > targetVelocity * READY_PERCENT &&
+                        Math.abs(robot.ls.getVelocity()) > targetVelocity * READY_PERCENT;
+
+        if (shooterReady) {
             robot.it.setPower(1);
-            sleep(1500);
-            // begin moving rubber bands to move balls up
-
             robot.demoServo1.setPosition(0.75);
-            sleep(750);
-            // move servos to get balls prepared for shot
-
-            robot.demoServo1.setPosition(0.25);
-            sleep(500);
-            // move servos backwards to prevent balls from moving out too fast
-
-            // stop servos to stop entire method
+        } else {
+            robot.it.setPower(0);
             robot.demoServo1.setPosition(0.5);
         }
     }
