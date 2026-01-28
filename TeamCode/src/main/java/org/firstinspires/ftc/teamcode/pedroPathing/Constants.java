@@ -31,8 +31,8 @@ public class Constants {
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
-            .forwardPodY(2.48) // both must be in inches
-            .strafePodX(3.5) // if pedro pathing does not work, this might be why, ensure proper measurements
+            .forwardPodY(3.5) // both must be in inches
+            .strafePodX(2.48) // if pedro pathing does not work, this might be why, ensure proper measurements
             .distanceUnit(DistanceUnit.INCH)
             // Make sure to replace the pinpoint hardware map name with the actual name.
             .hardwareMapName("pinpoint")
