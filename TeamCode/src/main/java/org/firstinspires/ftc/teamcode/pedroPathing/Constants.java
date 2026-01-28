@@ -21,18 +21,18 @@ public class Constants {
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
-            .rightFrontMotorName("cm3")
-            .rightRearMotorName("cm0")
-            .leftRearMotorName("cm1")
-            .leftFrontMotorName("cm2")
-            .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD);
+            .leftFrontMotorName("cm1")
+            .rightFrontMotorName("cm2")
+            .rightRearMotorName("cm3")
+            .leftRearMotorName("cm0")
+            .leftFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .leftRearMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
+            .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
-            .forwardPodY(3.5) // both must be in inches
-            .strafePodX(2.48) // if pedro pathing does not work, this might be why, ensure proper measurements
+            .forwardPodY(2.48) // both must be in inches
+            .strafePodX(3.5) // if pedro pathing does not work, this might be why, ensure proper measurements
             .distanceUnit(DistanceUnit.INCH)
             // Make sure to replace the pinpoint hardware map name with the actual name.
             .hardwareMapName("pinpoint")
