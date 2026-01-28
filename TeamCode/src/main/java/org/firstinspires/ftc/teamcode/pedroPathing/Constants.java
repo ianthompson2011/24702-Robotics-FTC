@@ -33,7 +33,7 @@ public class Constants {
     public static PinpointConstants localizerConstants = new PinpointConstants()
             .forwardPodY(2.48) // both must be in inches
             .strafePodX(3.5) // if pedro pathing does not work, this might be why, ensure proper measurements
-            .distanceUnit(DistanceUnit.MM)
+            .distanceUnit(DistanceUnit.INCH)
             // Make sure to replace the pinpoint hardware map name with the actual name.
             .hardwareMapName("pinpoint")
             .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
@@ -44,6 +44,7 @@ public class Constants {
         return new FollowerBuilder(followerConstants, hardwareMap)
                 .pathConstraints(pathConstraints)
                 .mecanumDrivetrain(driveConstants)
+                .pinpointLocalizer(localizerConstants)
                 .build();
     }
 }
