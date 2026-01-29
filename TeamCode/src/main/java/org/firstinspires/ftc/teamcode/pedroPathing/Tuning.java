@@ -329,7 +329,7 @@ class TurnTuner extends OpMode {
  */
 class ForwardVelocityTuner extends OpMode {
     private final ArrayList<Double> velocities = new ArrayList<>();
-    public static double DISTANCE = 48;
+    public static double DISTANCE = 24;
     public static double RECORD_NUMBER = 10;
 
     private boolean end;
@@ -355,12 +355,13 @@ class ForwardVelocityTuner extends OpMode {
     /** This starts the OpMode by setting the drive motors to run forward at full power. */
     @Override
     public void start() {
+        velocities.clear();
         for (int i = 0; i < RECORD_NUMBER; i++) {
             velocities.add(0.0);
         }
+        end = false;
         follower.startTeleopDrive(true);
         follower.update();
-        end = false;
     }
 
     /**
@@ -381,7 +382,7 @@ class ForwardVelocityTuner extends OpMode {
 
 
         if (!end) {
-            if (Math.abs(follower.getPose().getX()) > (DISTANCE + 72)) {
+            if (Math.abs(follower.getPose().getX() - 72) > DISTANCE) {
                 end = true;
                 stopRobot();
             } else {
@@ -436,7 +437,7 @@ class ForwardVelocityTuner extends OpMode {
 class LateralVelocityTuner extends OpMode {
     private final ArrayList<Double> velocities = new ArrayList<>();
 
-    public static double DISTANCE = 48;
+    public static double DISTANCE = 24;
     public static double RECORD_NUMBER = 10;
 
     private boolean end;
@@ -488,11 +489,11 @@ class LateralVelocityTuner extends OpMode {
         draw();
 
         if (!end) {
-            if (Math.abs(follower.getPose().getY()) > (DISTANCE + 72)) {
+            if (Math.abs(follower.getPose().getY() - 72) > DISTANCE) {
                 end = true;
                 stopRobot();
             } else {
-                follower.setTeleOpDrive(0,1,0,true);
+                follower.setTeleOpDrive(0,-1,0,true);
                 double currentVelocity = Math.abs(follower.getVelocity().dot(new Vector(1, Math.PI / 2)));
                 velocities.add(currentVelocity);
                 velocities.remove(0);
@@ -536,7 +537,7 @@ class LateralVelocityTuner extends OpMode {
  */
 class ForwardZeroPowerAccelerationTuner extends OpMode {
     private final ArrayList<Double> accelerations = new ArrayList<>();
-    public static double VELOCITY = 30;
+    public static double VELOCITY = 5;
 
     private double previousVelocity;
     private long previousTimeNano;
@@ -642,7 +643,7 @@ class ForwardZeroPowerAccelerationTuner extends OpMode {
  */
 class LateralZeroPowerAccelerationTuner extends OpMode {
     private final ArrayList<Double> accelerations = new ArrayList<>();
-    public static double VELOCITY = 30;
+    public static double VELOCITY = 6;
     private double previousVelocity;
     private long previousTimeNano;
     private boolean stopping;
