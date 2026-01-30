@@ -17,7 +17,9 @@ public class Constants {
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(10.25); // update the mass in kilos for the robot when complete!!!
+            .mass(10.25) // update the mass in kilos for the robot when complete!!!
+            .forwardZeroPowerAcceleration(-19.5)
+            .lateralZeroPowerAcceleration(-48);
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
@@ -29,8 +31,8 @@ public class Constants {
             .leftRearMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .xVelocity(48)
-            .yVelocity(41.5);
+            .xVelocity(47)
+            .yVelocity(36);
 
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
@@ -40,7 +42,7 @@ public class Constants {
             // Make sure to replace the pinpoint hardware map name with the actual name.
             .hardwareMapName("pinpoint")
             .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
-            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
+            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED)
             .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
     public static Follower createFollower(HardwareMap hardwareMap) {
