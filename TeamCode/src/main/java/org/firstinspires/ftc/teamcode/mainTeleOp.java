@@ -9,8 +9,8 @@ public class mainTeleOp extends LinearOpMode {
     Hardware robot = Hardware.getInstance();
 
     // shooter velocities (ticks/sec)
-    private static final double HIGH_VELOCITY = 1600;
-    private static final double LOW_VELOCITY  = 1500;
+    private static final double HIGH_VELOCITY = 1500;
+    private static final double LOW_VELOCITY  = 1400;
     private static final double READY_PERCENT = 0.95;
 
 

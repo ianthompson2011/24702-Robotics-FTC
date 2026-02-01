@@ -2,20 +2,19 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-// use this auto if on the right side
-// will move the robot forward and rotate slightly, then shoot three balls
+// move backwards and shoot 3 balls
 
-@Autonomous(name = "FarGoalAutoRight", group = "Robot")
-public class FarGoalAutoRight extends LinearOpMode {
+@Autonomous(name = "NearGoalAutoRight", group = "Robot")
+public class NearGoalAutoRight extends LinearOpMode {
     Hardware robot = Hardware.getInstance();
-    private final ElapsedTime runtime = new ElapsedTime();
 
     private static final double HIGH_VELOCITY = 1500;
-    private static final double LOW_VELOCITY  = 1400;
+    private static final double LOW_VELOCITY  = 1100;
     private static final double READY_PERCENT = 0.95;
+    private final ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() {
@@ -31,21 +30,21 @@ public class FarGoalAutoRight extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        // move the robot to desired shooting position then shoot
-        move();
+        moveBack();
         shootSequence();
+
+        telemetry.addData("Path", "Complete");
+        telemetry.update();
     }
 
-    public void move() {
-        robot.setPower(-1, 1, -1, 1); // fr, br, bl, fl
-        sleep(1250); // WHEN AT 100% BATTERY
+    public void moveBack() {
+        robot.setPower(1, -1, 1, -1); // fr, br, bl, fl
+        sleep(700); // WHEN AT 100% BATTERY
         robot.setPower(0, 0, 0, 0);
-        sleep(500);
-        robot.setPower(-1, -1, 1, 1);
         sleep(200);
-        robot.setPower(-1, 1, -1, 1); // fr, br, bl, fl
-        sleep(250);
-        robot.setPower(0,0,0,0);
+        robot.setPower(-1, -1, -1, -1); // fr, br, bl, fl
+        sleep(200); // WHEN AT 100% BATTERY
+        robot.setPower(0, 0, 0, 0);
     }
 
     private void shootSequence() {
@@ -81,6 +80,4 @@ public class FarGoalAutoRight extends LinearOpMode {
         robot.rs.setVelocity(0);
         robot.ls.setVelocity(0);
     }
-
-
 }
