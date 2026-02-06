@@ -18,8 +18,8 @@ public class Constants {
 
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(10.25) // update the mass in kilos for the robot when complete!!!
-            .forwardZeroPowerAcceleration(-19.5)
-            .lateralZeroPowerAcceleration(-48);
+            .forwardZeroPowerAcceleration(-30)
+            .lateralZeroPowerAcceleration(-63);
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
@@ -27,12 +27,16 @@ public class Constants {
             .rightFrontMotorName("cm3")
             .rightRearMotorName("cm0")
             .leftRearMotorName("cm1")
+//            .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
+//            .leftRearMotorDirection(DcMotorSimple.Direction.FORWARD)
+//            .rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
+//            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
             .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .xVelocity(47)
-            .yVelocity(36);
+            .xVelocity(63.396)
+            .yVelocity(46.464);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
             .forwardPodY(-2.625) // both must be in inches
@@ -41,8 +45,8 @@ public class Constants {
             // Make sure to replace the pinpoint hardware map name with the actual name.
             .hardwareMapName("pinpoint")
             .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD)
-            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
-            .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED);
+            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED)
+            .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
 
     public static Follower createFollower(HardwareMap hardwareMap) {
