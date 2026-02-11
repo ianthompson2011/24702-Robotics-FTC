@@ -26,11 +26,11 @@ public class mainTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            double leftStickY = -gamepad1.left_stick_y; // Remember, this is reversed!
-            double leftStickX = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
-            double rightStickX = gamepad1.right_stick_x;
+            double forward = -gamepad1.left_stick_y;     // X (Pedro forward)
+            double strafe  = gamepad1.left_stick_x * 1.1; // Y (Pedro left/right)
+            double turn    = gamepad1.right_stick_x;
 
-            drive(leftStickY, leftStickX, rightStickX);
+            drive(forward, strafe, turn);
 
             // ---------------- INTAKE ----------------
             handleIntake();
@@ -46,17 +46,17 @@ public class mainTeleOp extends LinearOpMode {
     }
 
     // ---------------- DRIVE ----------------
-    public void drive(double x, double y, double strafe) {
+    public void drive(double x, double y, double turn) {
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio, but only when
         // at least one is out of the range [-1, 1]
 
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(strafe), 1);
-        double frontLeftPower = (y + x + strafe) / denominator;
-        double backLeftPower = (y - x + strafe) / denominator;
-        double frontRightPower = (y - x - strafe) / denominator;
-        double backRightPower = (y + x - strafe) / denominator;
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(turn), 1);
+        double frontLeftPower = (y + x + turn) / denominator;
+        double backLeftPower = (y - x + turn) / denominator;
+        double frontRightPower = (y - x - turn) / denominator;
+        double backRightPower = (y + x - turn) / denominator;
 
         robot.lf.setPower(frontLeftPower);
         robot.lb.setPower(backLeftPower);

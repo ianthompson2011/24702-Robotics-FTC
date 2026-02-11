@@ -19,9 +19,6 @@ public class Hardware {
 
     public DcMotor it;
 
-    // pedro pathing pinpoint
-    // we might need pinpoint mapped onto i2c 0
-
     public static double maxSpeed = 0.85;
     // slightly lowered speed to prevent feeling of being overly reactive
     private static Hardware myInstance = null;
@@ -84,11 +81,10 @@ public class Hardware {
         // servos to push balls up to rs and ls motors
         demoServo1 = hwMap.get(Servo.class, "cs0");
     }
-    // update power levels and stay in safe operational limits
-    public void setPower(double fr, double br, double bl, double fl){
-        rf.setPower(Range.clip(fr, -maxSpeed, maxSpeed));
+    public void setPower(double fl, double fr, double bl, double br){
         lf.setPower(Range.clip(fl, -maxSpeed, maxSpeed));
-        rb.setPower(Range.clip(br, -maxSpeed, maxSpeed));
+        rf.setPower(Range.clip(fr, -maxSpeed, maxSpeed));
         lb.setPower(Range.clip(bl, -maxSpeed, maxSpeed));
+        rb.setPower(Range.clip(br, -maxSpeed, maxSpeed));
     }
 }

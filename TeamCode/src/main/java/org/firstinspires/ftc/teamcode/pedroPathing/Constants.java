@@ -17,33 +17,39 @@ public class Constants {
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(10.25); // update the mass in kilos for the robot when complete!!!
+            .mass(10.25) // update the mass in kilos for the robot when complete!!!
+            .forwardZeroPowerAcceleration(-27)
+            .lateralZeroPowerAcceleration(-70);
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
-            .rightFrontMotorName("rf")
-            .rightRearMotorName("rb")
-            .leftRearMotorName("lb")
-            .leftFrontMotorName("lf")
+            .leftFrontMotorName("cm2")
+            .rightFrontMotorName("cm3")
+            .rightRearMotorName("cm0")
+            .leftRearMotorName("cm1")
             .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD);
+            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
+            .xVelocity(80)
+            .yVelocity(56);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
-            .forwardPodY(2.48) // both must be in inches
-            .strafePodX(3.5) // if pedro pathing does not work, this might be why, ensure proper measurements
-            .distanceUnit(DistanceUnit.MM)
+            .forwardPodY(-2.625) // both must be in inches
+            .strafePodX(3.25) // if pedro pathing does not work, this might be why, ensure proper measurements
+            .distanceUnit(DistanceUnit.INCH)
             // Make sure to replace the pinpoint hardware map name with the actual name.
             .hardwareMapName("pinpoint")
-            .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
-            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
+            .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD)
+            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.REVERSED)
             .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
+
 
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)
                 .pathConstraints(pathConstraints)
                 .mecanumDrivetrain(driveConstants)
+                .pinpointLocalizer(localizerConstants)
                 .build();
     }
 }

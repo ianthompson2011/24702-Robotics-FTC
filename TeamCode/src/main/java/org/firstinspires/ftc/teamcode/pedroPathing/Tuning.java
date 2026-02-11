@@ -85,7 +85,10 @@ public class Tuning extends SelectableOpMode {
             follower = Constants.createFollower(hardwareMap);
         }
 
-        follower.setStartingPose(new Pose());
+        follower.setStartingPose(new Pose(72, 72));
+        follower.update();              // initialize pose tracker
+        follower.startTeleopDrive();    // initialize drive state
+        follower.update();              // finalize internal state
 
         poseHistory = follower.getPoseHistory();
 
@@ -154,7 +157,7 @@ class LocalizationTest extends OpMode {
      */
     @Override
     public void loop() {
-        follower.setTeleOpDrive(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, true);
+        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, true);
         follower.update();
 
         telemetryM.debug("x:" + follower.getPose().getX());
@@ -355,10 +358,15 @@ class ForwardVelocityTuner extends OpMode {
     /** This starts the OpMode by setting the drive motors to run forward at full power. */
     @Override
     public void start() {
+        follower.setStartingPose(new Pose(72, 72));
+        follower.update();
+        follower.startTeleopDrive();
+        follower.update();
         for (int i = 0; i < RECORD_NUMBER; i++) {
             velocities.add(0.0);
         }
-        follower.startTeleopDrive(true);
+        follower.update();
+        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, true);
         follower.update();
         end = false;
     }
@@ -385,7 +393,7 @@ class ForwardVelocityTuner extends OpMode {
                 end = true;
                 stopRobot();
             } else {
-                follower.setTeleOpDrive(1,0,0,true);
+                follower.setTeleOpDrive(0,-1,0,true);
                 //double currentVelocity = Math.abs(follower.getVelocity().getXComponent());
                 double currentVelocity = Math.abs(follower.poseTracker.getLocalizer().getVelocity().getX());
                 velocities.add(currentVelocity);
@@ -464,10 +472,15 @@ class LateralVelocityTuner extends OpMode {
     /** This starts the OpMode by setting the drive motors to run left at full power. */
     @Override
     public void start() {
+        follower.setStartingPose(new Pose(72, 72));
+        follower.update();
+        follower.startTeleopDrive();
+        follower.update();
         for (int i = 0; i < RECORD_NUMBER; i++) {
             velocities.add(0.0);
         }
-        follower.startTeleopDrive(true);
+        follower.update();
+        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, true);
         follower.update();
     }
 
@@ -492,7 +505,7 @@ class LateralVelocityTuner extends OpMode {
                 end = true;
                 stopRobot();
             } else {
-                follower.setTeleOpDrive(0,1,0,true);
+                follower.setTeleOpDrive(-1,0,0,true);
                 double currentVelocity = Math.abs(follower.getVelocity().dot(new Vector(1, Math.PI / 2)));
                 velocities.add(currentVelocity);
                 velocities.remove(0);
@@ -536,7 +549,7 @@ class LateralVelocityTuner extends OpMode {
  */
 class ForwardZeroPowerAccelerationTuner extends OpMode {
     private final ArrayList<Double> accelerations = new ArrayList<>();
-    public static double VELOCITY = 30;
+    public static double VELOCITY = 45;
 
     private double previousVelocity;
     private long previousTimeNano;
@@ -565,9 +578,13 @@ class ForwardZeroPowerAccelerationTuner extends OpMode {
     /** This starts the OpMode by setting the drive motors to run forward at full power. */
     @Override
     public void start() {
-        follower.startTeleopDrive(false);
+        follower.setStartingPose(new Pose(72, 72));
         follower.update();
-        follower.setTeleOpDrive(1,0,0,true);
+        follower.startTeleopDrive();
+        follower.update();
+        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, false);
+        follower.update();
+        follower.setTeleOpDrive(0,-1,0,true);
     }
 
     /**
@@ -642,7 +659,7 @@ class ForwardZeroPowerAccelerationTuner extends OpMode {
  */
 class LateralZeroPowerAccelerationTuner extends OpMode {
     private final ArrayList<Double> accelerations = new ArrayList<>();
-    public static double VELOCITY = 30;
+    public static double VELOCITY = 45;
     private double previousVelocity;
     private long previousTimeNano;
     private boolean stopping;
@@ -669,9 +686,13 @@ class LateralZeroPowerAccelerationTuner extends OpMode {
     /** This starts the OpMode by setting the drive motors to run forward at full power. */
     @Override
     public void start() {
-        follower.startTeleopDrive(false);
+        follower.setStartingPose(new Pose(72, 72));
         follower.update();
-        follower.setTeleOpDrive(0,1,0,true);
+        follower.startTeleopDrive();
+        follower.update();
+        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, false);
+        follower.update();
+        follower.setTeleOpDrive(-1,0,0,true);
     }
 
     /**

@@ -11,6 +11,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @Autonomous(name = "FarGoalAutoLeft", group = "Robot")
 public class FarGoalAutoLeft extends LinearOpMode {
     Hardware robot = Hardware.getInstance();
+
+    private static final double HIGH_VELOCITY = 1500;
+    private static final double LOW_VELOCITY  = 1400;
+    private static final double READY_PERCENT = 0.95;
     private final ElapsedTime runtime = new ElapsedTime();
 
     @Override
@@ -36,24 +40,45 @@ public class FarGoalAutoLeft extends LinearOpMode {
 
     public void move() {
         robot.setPower(-1, 1, -1, 1); // fr, br, bl, fl
-        sleep(1250); // WHEN AT 100% BATTERY
+        sleep(1500); // WHEN AT 100% BATTERY
         robot.setPower(0, 0, 0, 0);
         sleep(500);
         robot.setPower(1, 1, -1, -1);
-        sleep(140);
+        sleep(250);
         robot.setPower(0,0,0,0);
     }
 
-    public void shootSequence(){
-        robot.rs.setPower(-0.6);
-        robot.ls.setPower(-0.6);
-        sleep(1250);
+    private void shootSequence() {
+
+        double targetVelocity = HIGH_VELOCITY;
+
+        // Spin up shooters
+        robot.rs.setVelocity(-targetVelocity);
+        robot.ls.setVelocity(-targetVelocity);
+
+        // Wait until shooters are ready (or timeout safety)
+        ElapsedTime timer = new ElapsedTime();
+        timer.reset();
+
+        while (opModeIsActive()
+                && timer.seconds() < 30
+                && !(Math.abs(robot.rs.getVelocity()) > targetVelocity * READY_PERCENT
+                && Math.abs(robot.ls.getVelocity()) > targetVelocity * READY_PERCENT)) {
+            idle();
+        }
+
+        // Fire preloaded balls
         robot.it.setPower(1);
-        sleep(1500);
         robot.demoServo1.setPosition(0.75);
-        sleep(1750);
-        robot.demoServo1.setPosition(0.25);
-        sleep(500);
+        sleep(5000);
+
+        // Reset
+        robot.it.setPower(0);
         robot.demoServo1.setPosition(0.5);
+        sleep(200);
+
+        // Stop shooters
+        robot.rs.setVelocity(0);
+        robot.ls.setVelocity(0);
     }
 }
