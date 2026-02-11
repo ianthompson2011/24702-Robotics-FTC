@@ -85,7 +85,10 @@ public class Tuning extends SelectableOpMode {
             follower = Constants.createFollower(hardwareMap);
         }
 
-        follower.setStartingPose(new Pose());
+        follower.setStartingPose(new Pose(72, 72));
+        follower.update();              // initialize pose tracker
+        follower.startTeleopDrive();    // initialize drive state
+        follower.update();              // finalize internal state
 
         poseHistory = follower.getPoseHistory();
 
@@ -154,9 +157,7 @@ class LocalizationTest extends OpMode {
      */
     @Override
     public void loop() {
-        // the method setTeleOpDrive expects parameters (forward, strafe, turn, isRobotCentric (bool))
-        // For the purposes of our robot, we had to flip forward and strafe to have the robot go in the correct direction during localization
-        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, true);
+        follower.setTeleOpDrive(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, true);
         follower.update();
 
         telemetryM.debug("x:" + follower.getPose().getX());
@@ -331,7 +332,7 @@ class TurnTuner extends OpMode {
  */
 class ForwardVelocityTuner extends OpMode {
     private final ArrayList<Double> velocities = new ArrayList<>();
-    public static double DISTANCE = 24;
+    public static double DISTANCE = 48;
     public static double RECORD_NUMBER = 10;
 
     private boolean end;
@@ -357,13 +358,17 @@ class ForwardVelocityTuner extends OpMode {
     /** This starts the OpMode by setting the drive motors to run forward at full power. */
     @Override
     public void start() {
-        velocities.clear();
+        follower.setStartingPose(new Pose(72, 72));
+        follower.update();
+        follower.startTeleopDrive();
+        follower.update();
         for (int i = 0; i < RECORD_NUMBER; i++) {
             velocities.add(0.0);
         }
-        end = false;
-        follower.startTeleopDrive(true);
         follower.update();
+        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, true);
+        follower.update();
+        end = false;
     }
 
     /**
@@ -384,11 +389,11 @@ class ForwardVelocityTuner extends OpMode {
 
 
         if (!end) {
-            if (Math.abs(follower.getPose().getX() - 72) > DISTANCE) {
+            if (Math.abs(follower.getPose().getX()) > (DISTANCE + 72)) {
                 end = true;
                 stopRobot();
             } else {
-                follower.setTeleOpDrive(1,0,0,true);
+                follower.setTeleOpDrive(0,-1,0,true);
                 //double currentVelocity = Math.abs(follower.getVelocity().getXComponent());
                 double currentVelocity = Math.abs(follower.poseTracker.getLocalizer().getVelocity().getX());
                 velocities.add(currentVelocity);
@@ -439,7 +444,7 @@ class ForwardVelocityTuner extends OpMode {
 class LateralVelocityTuner extends OpMode {
     private final ArrayList<Double> velocities = new ArrayList<>();
 
-    public static double DISTANCE = 24;
+    public static double DISTANCE = 48;
     public static double RECORD_NUMBER = 10;
 
     private boolean end;
@@ -467,10 +472,15 @@ class LateralVelocityTuner extends OpMode {
     /** This starts the OpMode by setting the drive motors to run left at full power. */
     @Override
     public void start() {
+        follower.setStartingPose(new Pose(72, 72));
+        follower.update();
+        follower.startTeleopDrive();
+        follower.update();
         for (int i = 0; i < RECORD_NUMBER; i++) {
             velocities.add(0.0);
         }
-        follower.startTeleopDrive(true);
+        follower.update();
+        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, true);
         follower.update();
     }
 
@@ -491,11 +501,11 @@ class LateralVelocityTuner extends OpMode {
         draw();
 
         if (!end) {
-            if (Math.abs(follower.getPose().getY() - 72) > DISTANCE) {
+            if (Math.abs(follower.getPose().getY()) > (DISTANCE + 72)) {
                 end = true;
                 stopRobot();
             } else {
-                follower.setTeleOpDrive(0,-1,0,true);
+                follower.setTeleOpDrive(-1,0,0,true);
                 double currentVelocity = Math.abs(follower.getVelocity().dot(new Vector(1, Math.PI / 2)));
                 velocities.add(currentVelocity);
                 velocities.remove(0);
@@ -539,7 +549,7 @@ class LateralVelocityTuner extends OpMode {
  */
 class ForwardZeroPowerAccelerationTuner extends OpMode {
     private final ArrayList<Double> accelerations = new ArrayList<>();
-    public static double VELOCITY = 25;
+    public static double VELOCITY = 30;
 
     private double previousVelocity;
     private long previousTimeNano;
@@ -568,9 +578,13 @@ class ForwardZeroPowerAccelerationTuner extends OpMode {
     /** This starts the OpMode by setting the drive motors to run forward at full power. */
     @Override
     public void start() {
-        follower.startTeleopDrive(false);
+        follower.setStartingPose(new Pose(72, 72));
         follower.update();
-        follower.setTeleOpDrive(1,0,0,true);
+        follower.startTeleopDrive();
+        follower.update();
+        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, false);
+        follower.update();
+        follower.setTeleOpDrive(0,-1,0,true);
     }
 
     /**
@@ -645,7 +659,7 @@ class ForwardZeroPowerAccelerationTuner extends OpMode {
  */
 class LateralZeroPowerAccelerationTuner extends OpMode {
     private final ArrayList<Double> accelerations = new ArrayList<>();
-    public static double VELOCITY = 25;
+    public static double VELOCITY = 30;
     private double previousVelocity;
     private long previousTimeNano;
     private boolean stopping;
@@ -672,9 +686,13 @@ class LateralZeroPowerAccelerationTuner extends OpMode {
     /** This starts the OpMode by setting the drive motors to run forward at full power. */
     @Override
     public void start() {
-        follower.startTeleopDrive(false);
+        follower.setStartingPose(new Pose(72, 72));
         follower.update();
-        follower.setTeleOpDrive(0,-1,0,true);
+        follower.startTeleopDrive();
+        follower.update();
+        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, false);
+        follower.update();
+        follower.setTeleOpDrive(-1,0,0,true);
     }
 
     /**
