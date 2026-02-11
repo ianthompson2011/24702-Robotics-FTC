@@ -154,7 +154,9 @@ class LocalizationTest extends OpMode {
      */
     @Override
     public void loop() {
-        follower.setTeleOpDrive(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, true);
+        // the method setTeleOpDrive expects parameters (forward, strafe, turn, isRobotCentric (bool))
+        // For the purposes of our robot, we had to flip forward and strafe to have the robot go in the correct direction during localization
+        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, true);
         follower.update();
 
         telemetryM.debug("x:" + follower.getPose().getX());
