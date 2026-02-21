@@ -17,9 +17,7 @@ public class Constants {
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
 
     public static FollowerConstants followerConstants = new FollowerConstants()
-            .mass(10.25) // update the mass in kilos for the robot when complete!!!
-            .forwardZeroPowerAcceleration(-27)
-            .lateralZeroPowerAcceleration(-70);
+            .mass(10.25); // update the mass in kilos for the robot when complete!!!
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
@@ -30,9 +28,7 @@ public class Constants {
             .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .xVelocity(80)
-            .yVelocity(56);
+            .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
             .forwardPodY(-2.625) // both must be in inches
