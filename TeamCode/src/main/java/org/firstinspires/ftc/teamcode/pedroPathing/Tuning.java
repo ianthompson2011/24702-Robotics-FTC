@@ -15,6 +15,7 @@ import com.bylazar.field.PanelsField;
 import com.bylazar.field.Style;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
+import com.pedropathing.ErrorCalculator;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.*;
 import com.pedropathing.math.*;
@@ -85,10 +86,7 @@ public class Tuning extends SelectableOpMode {
             follower = Constants.createFollower(hardwareMap);
         }
 
-        follower.setStartingPose(new Pose(72, 72));
-        follower.update();              // initialize pose tracker
-        follower.startTeleopDrive();    // initialize drive state
-        follower.update();              // finalize internal state
+        follower.setStartingPose(new Pose());
 
         poseHistory = follower.getPoseHistory();
 
@@ -157,7 +155,7 @@ class LocalizationTest extends OpMode {
      */
     @Override
     public void loop() {
-        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, true);
+        follower.setTeleOpDrive(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, true);
         follower.update();
 
         telemetryM.debug("x:" + follower.getPose().getX());
@@ -209,7 +207,7 @@ class ForwardTuner extends OpMode {
     public void loop() {
         follower.update();
 
-        telemetryM.debug("Distance Moved: " + follower.getPose().getX());
+        telemetryM.debug("Distance Moved: " + (follower.getPose().getX() - 72));
         telemetryM.debug("The multiplier will display what your forward ticks to inches should be to scale your current distance to " + DISTANCE + " inches.");
         telemetryM.debug("Multiplier: " + (DISTANCE / ((follower.getPose().getX() - 72) / follower.getPoseTracker().getLocalizer().getForwardMultiplier())));
         telemetryM.update(telemetry);
@@ -257,7 +255,7 @@ class LateralTuner extends OpMode {
     public void loop() {
         follower.update();
 
-        telemetryM.debug("Distance Moved: " + follower.getPose().getY());
+        telemetryM.debug("Distance Moved: " + (follower.getPose().getY() - 72));
         telemetryM.debug("The multiplier will display what your strafe ticks to inches should be to scale your current distance to " + DISTANCE + " inches.");
         telemetryM.debug("Multiplier: " + (DISTANCE / ((follower.getPose().getY() - 72) / follower.getPoseTracker().getLocalizer().getLateralMultiplier())));
         telemetryM.update(telemetry);
@@ -358,15 +356,10 @@ class ForwardVelocityTuner extends OpMode {
     /** This starts the OpMode by setting the drive motors to run forward at full power. */
     @Override
     public void start() {
-        follower.setStartingPose(new Pose(72, 72));
-        follower.update();
-        follower.startTeleopDrive();
-        follower.update();
         for (int i = 0; i < RECORD_NUMBER; i++) {
             velocities.add(0.0);
         }
-        follower.update();
-        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, true);
+        follower.startTeleopDrive(true);
         follower.update();
         end = false;
     }
@@ -393,7 +386,7 @@ class ForwardVelocityTuner extends OpMode {
                 end = true;
                 stopRobot();
             } else {
-                follower.setTeleOpDrive(0,-1,0,true);
+                follower.setTeleOpDrive(1,0,0,true);
                 //double currentVelocity = Math.abs(follower.getVelocity().getXComponent());
                 double currentVelocity = Math.abs(follower.poseTracker.getLocalizer().getVelocity().getX());
                 velocities.add(currentVelocity);
@@ -472,15 +465,10 @@ class LateralVelocityTuner extends OpMode {
     /** This starts the OpMode by setting the drive motors to run left at full power. */
     @Override
     public void start() {
-        follower.setStartingPose(new Pose(72, 72));
-        follower.update();
-        follower.startTeleopDrive();
-        follower.update();
         for (int i = 0; i < RECORD_NUMBER; i++) {
             velocities.add(0.0);
         }
-        follower.update();
-        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, true);
+        follower.startTeleopDrive(true);
         follower.update();
     }
 
@@ -505,7 +493,7 @@ class LateralVelocityTuner extends OpMode {
                 end = true;
                 stopRobot();
             } else {
-                follower.setTeleOpDrive(-1,0,0,true);
+                follower.setTeleOpDrive(0,1,0,true);
                 double currentVelocity = Math.abs(follower.getVelocity().dot(new Vector(1, Math.PI / 2)));
                 velocities.add(currentVelocity);
                 velocities.remove(0);
@@ -549,7 +537,7 @@ class LateralVelocityTuner extends OpMode {
  */
 class ForwardZeroPowerAccelerationTuner extends OpMode {
     private final ArrayList<Double> accelerations = new ArrayList<>();
-    public static double VELOCITY = 45;
+    public static double VELOCITY = 30;
 
     private double previousVelocity;
     private long previousTimeNano;
@@ -578,13 +566,9 @@ class ForwardZeroPowerAccelerationTuner extends OpMode {
     /** This starts the OpMode by setting the drive motors to run forward at full power. */
     @Override
     public void start() {
-        follower.setStartingPose(new Pose(72, 72));
+        follower.startTeleopDrive(false);
         follower.update();
-        follower.startTeleopDrive();
-        follower.update();
-        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, false);
-        follower.update();
-        follower.setTeleOpDrive(0,-1,0,true);
+        follower.setTeleOpDrive(1,0,0,true);
     }
 
     /**
@@ -659,7 +643,7 @@ class ForwardZeroPowerAccelerationTuner extends OpMode {
  */
 class LateralZeroPowerAccelerationTuner extends OpMode {
     private final ArrayList<Double> accelerations = new ArrayList<>();
-    public static double VELOCITY = 45;
+    public static double VELOCITY = 30;
     private double previousVelocity;
     private long previousTimeNano;
     private boolean stopping;
@@ -686,13 +670,9 @@ class LateralZeroPowerAccelerationTuner extends OpMode {
     /** This starts the OpMode by setting the drive motors to run forward at full power. */
     @Override
     public void start() {
-        follower.setStartingPose(new Pose(72, 72));
+        follower.startTeleopDrive(false);
         follower.update();
-        follower.startTeleopDrive();
-        follower.update();
-        follower.setTeleOpDrive(gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x, false);
-        follower.update();
-        follower.setTeleOpDrive(-1,0,0,true);
+        follower.setTeleOpDrive(0,1,0,true);
     }
 
     /**
@@ -811,6 +791,9 @@ class TranslationalTuner extends OpMode {
         }
 
         telemetryM.debug("Push the robot laterally to test the Translational PIDF(s).");
+        telemetryM.addData("Zero Line", 0);
+        telemetryM.addData("Error X", follower.errorCalculator.getTranslationalError().getXComponent());
+        telemetryM.addData("Error Y", follower.errorCalculator.getTranslationalError().getYComponent());
         telemetryM.update(telemetry);
     }
 }
@@ -883,6 +866,8 @@ class HeadingTuner extends OpMode {
         }
 
         telemetryM.debug("Turn the robot manually to test the Heading PIDF(s).");
+        telemetryM.addData("Zero Line", 0);
+        telemetryM.addData("Error", follower.errorCalculator.getHeadingError());
         telemetryM.update(telemetry);
     }
 }
@@ -962,6 +947,8 @@ class DriveTuner extends OpMode {
         }
 
         telemetryM.debug("Driving forward?: " + forward);
+        telemetryM.addData("Zero Line", 0);
+        telemetryM.addData("Error", follower.errorCalculator.getDriveErrors()[1]);
         telemetryM.update(telemetry);
     }
 }

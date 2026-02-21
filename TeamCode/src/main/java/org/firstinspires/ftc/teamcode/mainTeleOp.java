@@ -26,11 +26,11 @@ public class mainTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            double forward = -gamepad1.left_stick_y;     // X (Pedro forward)
-            double strafe  = gamepad1.left_stick_x * 1.1; // Y (Pedro left/right)
+            double forward = -gamepad1.left_stick_y;
+            double strafe  = gamepad1.left_stick_x * 1.1;
             double turn    = gamepad1.right_stick_x;
 
-            drive(forward, strafe, turn);
+            drive(strafe, forward, turn);
 
             // ---------------- INTAKE ----------------
             handleIntake();
