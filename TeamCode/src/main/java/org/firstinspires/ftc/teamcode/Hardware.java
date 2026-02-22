@@ -19,7 +19,7 @@ public class Hardware {
 
     public DcMotor it;
 
-    public static double maxSpeed = 0.85;
+    public static double maxSpeed = 0.75;
     // slightly lowered speed to prevent feeling of being overly reactive
     private static Hardware myInstance = null;
     public static Hardware getInstance(){
