@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "mainTeleOp")
-public class mainTeleOp extends LinearOpMode {
+@TeleOp(name = "MainTeleOp")
+public class MainTeleOp extends LinearOpMode {
 
     Hardware robot = Hardware.getInstance();
 
@@ -37,11 +37,6 @@ public class mainTeleOp extends LinearOpMode {
 
             // ---------------- SHOOTER ----------------
             handleShooter();
-
-            // ---------------- TELEMETRY ----------------
-            telemetry.addData("RS Velocity", robot.rs.getVelocity());
-            telemetry.addData("LS Velocity", robot.ls.getVelocity());
-            telemetry.update();
         }
     }
 
