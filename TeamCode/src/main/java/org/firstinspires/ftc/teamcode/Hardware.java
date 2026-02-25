@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -19,7 +20,9 @@ public class Hardware {
 
     public DcMotor it;
 
-    public static double maxSpeed = 0.75;
+    public static Pose lastAutoPose = null;
+
+    public static double maxSpeed = 0.7;
     // slightly lowered speed to prevent feeling of being overly reactive
     private static Hardware myInstance = null;
     public static Hardware getInstance(){
