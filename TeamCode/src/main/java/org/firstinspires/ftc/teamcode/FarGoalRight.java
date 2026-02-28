@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
-@Autonomous(name = "NearGoalRight")
-public class NearGoalRight extends OpMode {
+@Autonomous(name = "FarGoalRight")
+public class FarGoalRight extends OpMode {
 
     private Hardware robot = Hardware.getInstance();
 
@@ -34,7 +34,7 @@ public class NearGoalRight extends OpMode {
     // ── Poses in chronological order ─────────────────────────────────────────
 
     // 1. Start
-    private final Pose startPose    = new Pose(120.8683, 127.7720, Math.toRadians(40));
+    private final Pose startPose    = new Pose(64, 8, Math.toRadians(90));
 
     // 2. Shoot position
     private final Pose shootPose    = new Pose(86.0896,  85.4328,  Math.toRadians(45));
@@ -178,7 +178,6 @@ public class NearGoalRight extends OpMode {
         }
 
         if (!feeding) {
-            // Check ready before every single ball, same as TeleOp
             boolean ready = Math.abs(robot.rs.getVelocity()) > HIGH_VELOCITY * READY_PERCENT
                     && Math.abs(robot.ls.getVelocity()) > HIGH_VELOCITY * READY_PERCENT;
             if (!ready) return false;
@@ -194,7 +193,7 @@ public class NearGoalRight extends OpMode {
                 feeding = false;
                 shotsFired++;
                 pathTimer.resetTimer();
-                // Re-assert velocity so shooter recovers speed before next ball
+                // Re-assert velocity so shooter recovers before next ball
                 robot.rs.setVelocity(-HIGH_VELOCITY);
                 robot.ls.setVelocity(-HIGH_VELOCITY);
             }

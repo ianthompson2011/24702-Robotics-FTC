@@ -2,10 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
@@ -15,72 +14,43 @@ public class RightGoalTeleOp extends LinearOpMode {
     Hardware robot = Hardware.getInstance();
     private Follower follower;
 
-    // Shooter constants
-    private static final double HIGH_VELOCITY = 1750;
-    private static final double LOW_VELOCITY = 1450;
     private static final double READY_PERCENT = 0.95;
-
-    // Distance shooting tuning
-    private static final double BASE_VELOCITY = 1400;
-    private static final double DISTANCE_GAIN = 3.0;
-
-    // Right goal position
     private static final double GOAL_X = 133;
     private static final double GOAL_Y = 138;
-
-    private Timer shootTimer = new Timer();
-    private boolean autoFeeding = false;
+    private static final double REFERENCE_DISTANCE = 24.0;
+    private static final double REFERENCE_VELOCITY = 1750.0;
 
     @Override
     public void runOpMode() {
-
         robot.init(hardwareMap);
-        follower = Constants.createFollower(hardwareMap);
 
+        follower = Constants.createFollower(hardwareMap);
         if (Hardware.lastAutoPose != null) {
             follower.setPose(Hardware.lastAutoPose);
         }
 
         telemetry.addData("Status", "Ready");
         telemetry.update();
-
         waitForStart();
 
-        while (opModeIsActive()) {
+        follower.startTeleopDrive(true); // critical: stop motor control
 
+        while (opModeIsActive()) {
             follower.update();
 
             double forward = -gamepad1.left_stick_y;
-            double strafe = gamepad1.left_stick_x * 1.1;
-            double turn = gamepad1.right_stick_x;
-
-            // Auto-turn toward goal with back of robot if X is held
-            if (gamepad1.x) {
-                Pose pose = follower.getPose();
-                double dx = GOAL_X - pose.getX();
-                double dy = GOAL_Y - pose.getY();
-                double goalAngle = Math.atan2(dy, dx) + Math.PI; // rear faces goal
-
-                // Wrap goalAngle to [-π, π]
-                while (goalAngle > Math.PI) goalAngle -= 2 * Math.PI;
-                while (goalAngle < -Math.PI) goalAngle += 2 * Math.PI;
-
-                double error = goalAngle - pose.getHeading();
-                while (error > Math.PI) error -= 2 * Math.PI;
-                while (error < -Math.PI) error += 2 * Math.PI;
-
-                double kTurn = 1.2; // reduce gain for stability
-                turn = Range.clip(kTurn * error, -0.4, 0.4); // clamp turn to prevent jitter
-            }
+            double strafe  = gamepad1.left_stick_x * 1.1;
+            double turn    = gamepad1.right_stick_x;
 
             drive(strafe, forward, turn);
-
             handleIntake();
             handleShooter();
 
-            telemetry.addData("X", follower.getPose().getX());
-            telemetry.addData("Y", follower.getPose().getY());
-            telemetry.addData("Distance", getDistanceToGoal());
+            double dist = getDistanceToGoal();
+            telemetry.addData("Distance to Goal (in)", String.format("%.1f", dist));
+            telemetry.addData("Target Velocity", String.format("%.0f", distanceToVelocity(dist)));
+            telemetry.addData("RS Velocity", robot.rs.getVelocity());
+            telemetry.addData("LS Velocity", robot.ls.getVelocity());
             telemetry.update();
         }
     }
@@ -110,62 +80,35 @@ public class RightGoalTeleOp extends LinearOpMode {
     }
 
     private void handleShooter() {
-
-        Pose pose = follower.getPose();
-
-        // -------- AUTO DISTANCE + TURN (X) --------
-        if (gamepad1.x) {
-
-            double distance = getDistanceToGoal();
-            double targetVelocity = BASE_VELOCITY + distance * DISTANCE_GAIN;
-
-            robot.rs.setVelocity(-targetVelocity);
-            robot.ls.setVelocity(-targetVelocity);
-
-            boolean ready = Math.abs(robot.rs.getVelocity()) > targetVelocity * READY_PERCENT
-                    && Math.abs(robot.ls.getVelocity()) > targetVelocity * READY_PERCENT;
-
-            if (ready) {
-                if (!autoFeeding) {
-                    shootTimer.resetTimer();
-                    autoFeeding = true;
-                }
-                if (shootTimer.getElapsedTimeSeconds() > 0.25) {
-                    robot.it.setPower(1);
-                    robot.demoServo1.setPosition(0.75);
-                }
-            } else {
-                autoFeeding = false;
-                robot.it.setPower(0);
-                robot.demoServo1.setPosition(0.5);
-            }
-
-            return;
-        }
-
-        autoFeeding = false;
-
-        // -------- MANUAL SHOOTER (Y) --------
         if (!gamepad1.y) {
             robot.rs.setVelocity(0);
             robot.ls.setVelocity(0);
+            robot.demoServo1.setPosition(0.5);
             return;
         }
 
-        double targetVelocity = gamepad1.a ? LOW_VELOCITY : HIGH_VELOCITY;
+        double targetVelocity = gamepad1.x
+                ? distanceToVelocity(getDistanceToGoal())
+                : 1500;
+
         robot.rs.setVelocity(-targetVelocity);
         robot.ls.setVelocity(-targetVelocity);
 
-        boolean ready = Math.abs(robot.rs.getVelocity()) > targetVelocity * READY_PERCENT
-                && Math.abs(robot.ls.getVelocity()) > targetVelocity * READY_PERCENT;
+        boolean shooterReady =
+                Math.abs(robot.rs.getVelocity()) > targetVelocity * READY_PERCENT &&
+                        Math.abs(robot.ls.getVelocity()) > targetVelocity * READY_PERCENT;
 
-        if (ready) {
+        if (shooterReady) {
             robot.it.setPower(1);
             robot.demoServo1.setPosition(0.75);
         } else {
             robot.it.setPower(0);
             robot.demoServo1.setPosition(0.5);
         }
+    }
+
+    private double distanceToVelocity(double distanceInches) {
+        return (distanceInches / REFERENCE_DISTANCE) * REFERENCE_VELOCITY;
     }
 
     private double getDistanceToGoal() {

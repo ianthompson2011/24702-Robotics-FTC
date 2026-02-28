@@ -22,7 +22,7 @@ public class Hardware {
 
     public static Pose lastAutoPose = null;
 
-    public static double maxSpeed = 0.7;
+    public static double maxSpeed = 1;
     // slightly lowered speed to prevent feeling of being overly reactive
     private static Hardware myInstance = null;
     public static Hardware getInstance(){
