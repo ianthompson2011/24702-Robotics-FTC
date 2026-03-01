@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.FullAuto;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
@@ -8,6 +8,7 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 @Autonomous(name = "NearGoalRight")
@@ -15,7 +16,7 @@ public class NearGoalRight extends OpMode {
 
     private Hardware robot = Hardware.getInstance();
 
-    private static final double HIGH_VELOCITY  = 1500;
+    private static final double HIGH_VELOCITY  = 1700;
     private static final double READY_PERCENT  = 0.95;
     private static final double SETTLE_TIME    = 0.5;
     private static final double FEED_TIME      = 0.65;
@@ -37,7 +38,7 @@ public class NearGoalRight extends OpMode {
     private final Pose startPose    = new Pose(120.8683, 127.7720, Math.toRadians(40));
 
     // 2. Shoot position
-    private final Pose shootPose    = new Pose(86.0896,  85.4328,  Math.toRadians(45));
+    private final Pose shootPose    = new Pose(82,  82,  Math.toRadians(45));
 
     // 3. Row 1 (bottom, Y≈35)
     private final Pose row1Start    = new Pose(86.0773,  35.3636,  Math.toRadians(180));
