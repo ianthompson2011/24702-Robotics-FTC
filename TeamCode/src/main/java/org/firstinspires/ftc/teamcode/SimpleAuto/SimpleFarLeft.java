@@ -16,7 +16,7 @@ public class SimpleFarLeft extends OpMode {
 
     private Hardware robot = Hardware.getInstance();
 
-    private static final double HIGH_VELOCITY = 1700;
+    private static final double HIGH_VELOCITY = 1600;
     private static final double READY_PERCENT = 0.95;
     private static final double FEED_TIME     = 0.65;
     private static final double FULL_POWER    = 1.0;
