@@ -38,7 +38,7 @@ public class FarGoalRight extends OpMode {
     private final Pose startPose    = new Pose(64, 8, Math.toRadians(90));
 
     // 2. Shoot position
-    private final Pose shootPose    = new Pose(82,  82,  Math.toRadians(45));
+    private final Pose shootPose    = new Pose(86,  82,  Math.toRadians(45));
 
     // 3. Row 1 (bottom, Y≈35)
     private final Pose row1Start    = new Pose(86.0773,  35.3636,  Math.toRadians(180));

@@ -42,7 +42,7 @@ public class SimpleNearLeft extends OpMode {
 
     // ── Poses ─────────────────────────────────────────────────────────────────
     private final Pose startPose      = new Pose(24,  126, Math.toRadians(135));
-    private final Pose shootPose      = new Pose(61,  81,  Math.toRadians(135));
+    private final Pose shootPose    = new Pose(58,  82,  Math.toRadians(135));
     private final Pose parkAfterShoot = new Pose(56,  122, Math.toRadians(90));  // used after shooting
     private final Pose parkDirectPose = new Pose(60,  130, Math.toRadians(90));  // park-only destination
 

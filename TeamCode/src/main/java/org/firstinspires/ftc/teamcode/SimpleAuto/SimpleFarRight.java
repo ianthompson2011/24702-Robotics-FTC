@@ -42,7 +42,7 @@ public class SimpleFarRight extends OpMode {
 
     // ── Poses ─────────────────────────────────────────────────────────────────
     private final Pose startPose      = new Pose(64,  8,   Math.toRadians(90));
-    private final Pose shootPose      = new Pose(82,  82,  Math.toRadians(45));
+    private final Pose shootPose    = new Pose(95,  75,  Math.toRadians(50));
     private final Pose parkAfterShoot = new Pose(93,  125, Math.toRadians(90));  // used after shooting
     private final Pose parkDirectPose = new Pose(35,  9,   Math.toRadians(90));  // park-only destination
 

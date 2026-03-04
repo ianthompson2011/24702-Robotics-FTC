@@ -16,7 +16,7 @@ public class FarGoalLeft extends OpMode {
 
     private Hardware robot = Hardware.getInstance();
 
-    private static final double HIGH_VELOCITY  = 1700;
+    private static final double HIGH_VELOCITY  = 1725;
     private static final double READY_PERCENT  = 0.95;
     private static final double SETTLE_TIME    = 0.5;
     private static final double FEED_TIME      = 0.65;
@@ -35,25 +35,25 @@ public class FarGoalLeft extends OpMode {
     // ── Poses ─────────────────────────────────────────────────────────────────
 
     private final Pose startPose    = new Pose(80, 8, Math.toRadians(90));
-    private final Pose shootPose    = new Pose(61,  81,  Math.toRadians(135));
+    private final Pose shootPose    = new Pose(58,  82,  Math.toRadians(135));
 
     // Row 1 (bottom) — X+2, Y+1.5
-    private final Pose row1Start    = new Pose(44,  35.5, Math.toRadians(0));
-    private final Pose row1End      = new Pose(18,  35.5, Math.toRadians(0));
+    private final Pose row1Start    = new Pose(49,  37.5, Math.toRadians(0));
+    private final Pose row1End      = new Pose(20,  37.5, Math.toRadians(0));
 
     // Intermediate after row 1 — X-15
-    private final Pose afterRow1Mid = new Pose(57, 68, Math.toRadians(135));
+    private final Pose afterRow1Mid = new Pose(59, 68, Math.toRadians(135));
 
     // Row 2 (middle) — X+2, Y+1.5
-    private final Pose row2Start    = new Pose(44,  58.5, Math.toRadians(0));
-    private final Pose row2End      = new Pose(18,  58.5, Math.toRadians(0));
+    private final Pose row2Start    = new Pose(46,  60, Math.toRadians(0));
+    private final Pose row2End      = new Pose(20,  60, Math.toRadians(0));
 
     // Intermediate after row 2 — X-15
     private final Pose afterRow2Mid = new Pose(46, 81, Math.toRadians(135));
 
     // Row 3 (top) — X+2, Y+1.5
-    private final Pose row3Start    = new Pose(44,  85.5, Math.toRadians(0));
-    private final Pose row3End      = new Pose(18,  85.5, Math.toRadians(0));
+    private final Pose row3Start    = new Pose(46,  85, Math.toRadians(0));
+    private final Pose row3End      = new Pose(20,  85, Math.toRadians(0));
 
     private final Pose endPose      = new Pose(56, 122, Math.toRadians(90));
 
