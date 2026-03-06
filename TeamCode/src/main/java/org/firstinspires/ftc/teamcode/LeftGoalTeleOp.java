@@ -15,7 +15,7 @@ public class LeftGoalTeleOp extends LinearOpMode {
     private Follower follower;
 
     // Shooter
-    private static final double TARGET_VELOCITY = 1700;
+    private static final double TARGET_VELOCITY = 1650;
     private static final double READY_THRESHOLD = 0.90;
     private static final long READY_TIME_MS = 75;
     private long readyStartTime = 0;
